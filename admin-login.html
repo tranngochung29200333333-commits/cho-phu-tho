@@ -1,40 +1,8 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Chợ Phú Thọ</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<header><div class="header"><a href="index.html" class="logo">🛒 Chợ Phú Thọ</a></div></header>
-<main class="container">
-    <div class="auth-box">
-        <h2>🔐 Đăng nhập quản trị</h2>
-        <p>Dùng tài khoản Supabase có quyền Admin.</p>
-        <label>Email</label><input type="email" id="adminEmail" placeholder="admin@example.com">
-        <label>Mật khẩu</label><input type="password" id="adminPassword" placeholder="Mật khẩu">
-        <button class="btn-post" onclick="adminLogin()">Đăng nhập Admin</button>
-        <p class="auth-link"><a href="index.html">← Về trang chủ</a></p>
-    </div>
-</main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-<script>
-async function adminLogin(){
-    const email=document.getElementById('adminEmail').value.trim();
-    const password=document.getElementById('adminPassword').value;
-    if(!email||!password){alert('Vui lòng nhập email và mật khẩu.');return;}
-    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
-    if(error){alert('Đăng nhập thất bại: '+error.message);return;}
-    const {data:profile}=await supabaseClient.from('profiles').select('role').eq('id',data.user.id).maybeSingle();
-    if(profile?.role!=='admin'){
-        await supabaseClient.auth.signOut();
-        alert('Tài khoản này không có quyền Admin.');
-        return;
-    }
-    window.location.href='admin.html';
-}
-</script>
-</body>
-</html>
+<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Quản trị | Chợ Phú Thọ</title><link rel="stylesheet" href="css/style.css"></head>
+<body class="auth-page"><header class="site-header"><div class="topbar container-wide"><a href="index.html" class="logo">🛒 Chợ Phú Thọ</a><a href="index.html" class="top-manage">← Trang chủ</a></div></header>
+<main class="container auth-shell"><section class="auth-box auth-card"><div class="auth-kicker">KHU VỰC QUẢN TRỊ</div><h1>Đăng nhập Admin</h1><p>Chỉ tài khoản có vai trò <b>admin</b> mới được vào bảng điều khiển.</p><form onsubmit="adminLogin(event)"><label>Email<input name="email" type="email" required autocomplete="email"></label><label>Mật khẩu<input name="password" type="password" required autocomplete="current-password"></label><div id="authStatus" class="auth-status"></div><button class="primary-full" type="submit">Vào bảng điều khiển</button></form></section><aside class="auth-side"><span class="eyebrow">ADMIN</span><h2>Quản lý tập trung website</h2><div class="auth-role"><b>👥 Người dùng</b><span>Xem tài khoản và vai trò hiện tại.</span></div><div class="auth-role"><b>🏪 Nhà bán hàng</b><span>Kiểm tra và duyệt hồ sơ trước khi cấp quyền.</span></div><div class="auth-role"><b>📋 Tin đăng & báo cáo</b><span>Duyệt, ẩn, xóa và xử lý báo cáo từ người dùng.</span></div></aside></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js"></script><script>
+function showAdminStatus(m){const b=document.getElementById('authStatus');b.className='auth-status error';b.textContent=m;}
+async function adminLogin(event){event.preventDefault();const f=event.target;const email=f.email.value.trim(),password=f.password.value,b=f.querySelector('button');b.disabled=true;b.textContent='Đang kiểm tra...';const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error||!data.user){b.disabled=false;b.textContent='Vào bảng điều khiển';return showAdminStatus(error?.message||'Đăng nhập thất bại.');}const {data:p}=await supabaseClient.from('profiles').select('role').eq('id',data.user.id).maybeSingle();if(p?.role!=='admin'){await supabaseClient.auth.signOut();b.disabled=false;b.textContent='Vào bảng điều khiển';return showAdminStatus('Tài khoản này không có quyền Admin.');}location.href='admin.html';}
+</script></body></html>
