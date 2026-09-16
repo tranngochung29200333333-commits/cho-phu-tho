@@ -6,143 +6,7 @@
 
     <title>Chợ Phú Thọ - Mua bán rao vặt</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-        }
-
-        header {
-            background: #ffba00;
-            padding: 15px 5%;
-        }
-
-        .header {
-            max-width: 1200px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo {
-            font-size: 26px;
-            font-weight: bold;
-        }
-
-        .search {
-            flex: 1;
-            display: flex;
-        }
-
-        .search input {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 5px 0 0 5px;
-            font-size: 16px;
-        }
-
-        .search button {
-            border: none;
-            padding: 0 20px;
-            background: #333;
-            color: white;
-            cursor: pointer;
-            border-radius: 0 5px 5px 0;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 25px auto;
-            padding: 0 15px;
-        }
-
-        .location {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .categories {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-        }
-
-        .category {
-            background: white;
-            padding: 25px 10px;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .category:hover {
-            box-shadow: 0 2px 10px #ccc;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .product {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .product img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .product-content {
-            padding: 12px;
-        }
-
-        .price {
-            color: #d70000;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .title {
-            margin: 8px 0;
-            font-weight: bold;
-        }
-
-        .location-small {
-            color: #777;
-            font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-
-            .header {
-                flex-direction: column;
-            }
-
-            .categories {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .products {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -152,8 +16,23 @@
     <div class="header">
 
         <div class="logo">
-            🛒 Chợ Phú Thọ
-        </div>
+    🛒 Chợ Phú Thọ
+</div>
+<div id="accountArea">
+    <a href="dang-nhap.html">Đăng nhập</a>
+</div>
+
+<a href="dang-tin.html" class="post-button">
+    + Đăng tin
+</a>
+<div id="userArea"></div>
+<a href="quan-ly-tin.html"
+   class="btn-post">
+
+    Quản lý tin
+
+</a>
+
 
         <div class="search">
             <input
@@ -177,6 +56,12 @@
     </div>
 
     <h2>Danh mục</h2>
+    <a
+    href="danh-muc.html"
+    class="view-category"
+>
+    Xem tất cả danh mục →
+</a>
 
     <div class="categories">
 
@@ -205,7 +90,9 @@
 
     <h2>Tin đăng mới</h2>
 
+    <a href="chi-tiet.html" class="product-link"></a>
     <div class="products">
+
 
         <div class="product">
 
@@ -216,6 +103,7 @@
                 <div class="title">
                     iPhone 15 Pro 256GB
                 </div>
+
 
                 <div class="price">
                     18.500.000 đ
@@ -228,8 +116,9 @@
             </div>
 
         </div>
+        </a>
 
-
+<a href="chi-tiet.html" class="product-link">
         <div class="product">
 
             <img src="https://picsum.photos/400/300?2">
@@ -251,8 +140,9 @@
             </div>
 
         </div>
+        </a>
 
-
+<a href="chi-tiet.html" class="product-link"></a>
         <div class="product">
 
             <img src="https://picsum.photos/400/300?3">
@@ -274,8 +164,9 @@
             </div>
 
         </div>
+        </a>
 
-
+<a href="chi-tiet.html" class="product-link"></a>
         <div class="product">
 
             <img src="https://picsum.photos/400/300?4">
@@ -301,6 +192,9 @@
     </div>
 
 </div>
-
+</a>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

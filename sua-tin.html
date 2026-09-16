@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sửa tin - Chợ Phú Thọ</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+
+<body>
+
+<header class="header">
+
+    <div class="container">
+
+        <a href="index.html"
+           class="logo">
+
+            🛒 Chợ Phú Thọ
+
+        </a>
+
+        <a href="quan-ly-tin.html">
+            Quản lý tin
+        </a>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <div class="auth-box">
+
+        <h2>Sửa tin đăng</h2>
+
+
+        <label>Số SIM</label>
+
+        <input
+            type="text"
+            id="editSimNumber"
+        >
+
+
+        <label>Tiêu đề</label>
+
+        <input
+            type="text"
+            id="editTitle"
+        >
+
+
+        <label>Giá bán</label>
+
+        <input
+            type="number"
+            id="editPrice"
+        >
+
+
+        <label>Nhà mạng</label>
+
+        <select id="editNetwork">
+
+            <option value="Viettel">
+                Viettel
+            </option>
+
+            <option value="Vinaphone">
+                Vinaphone
+            </option>
+
+            <option value="Mobifone">
+                Mobifone
+            </option>
+
+            <option value="Vietnamobile">
+                Vietnamobile
+            </option>
+
+        </select>
+
+
+        <label>Khu vực</label>
+
+        <select id="editLocation">
+
+            <option value="Việt Trì">
+                Việt Trì
+            </option>
+
+            <option value="Phú Thọ">
+                Phú Thọ
+            </option>
+
+            <option value="Lâm Thao">
+                Lâm Thao
+            </option>
+
+            <option value="Thanh Sơn">
+                Thanh Sơn
+            </option>
+
+            <option value="Thanh Ba">
+                Thanh Ba
+            </option>
+
+            <option value="Đoan Hùng">
+                Đoan Hùng
+            </option>
+
+            <option value="Hạ Hòa">
+                Hạ Hòa
+            </option>
+
+            <option value="Cẩm Khê">
+                Cẩm Khê
+            </option>
+
+        </select>
+
+
+        <label>Mô tả</label>
+
+        <textarea
+            id="editDescription"
+            rows="6"
+        ></textarea>
+
+
+        <button
+            class="btn-post"
+            onclick="saveEditedProduct()">
+
+            Lưu thay đổi
+
+        </button>
+
+    </div>
+
+</main>
+
+
+<script src="js/main.js"></script>
+
+</body>
+
+</html>
