@@ -1,29 +1,24 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký - Chợ Phú Thọ</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<header><div class="header"><a href="index.html" class="logo">🛒 Chợ Phú Thọ</a><a href="index.html">Trang chủ</a></div></header>
-<main class="container">
-    <div class="auth-box">
-        <h2>Tạo tài khoản</h2>
-        <p>Mua bán SIM số đẹp tại Phú Thọ</p>
-        <label>Họ và tên</label><input type="text" id="fullname" placeholder="Nguyễn Văn A">
-        <label>Số điện thoại</label><input type="tel" id="phone" placeholder="0988 888 888">
-        <label>Email</label><input type="email" id="email" placeholder="email@example.com">
-        <label>Mật khẩu</label><input type="password" id="password" placeholder="Ít nhất 6 ký tự">
-        <label>Bạn là</label>
-        <select id="accountType"><option value="customer">👤 Khách hàng</option><option value="seller">🏪 Nhà bán hàng</option></select>
-        <button class="btn-post" onclick="registerUser()">Đăng ký</button>
-        <p class="auth-link">Đã có tài khoản? <a href="dang-nhap.html">Đăng nhập</a></p>
-    </div>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Đăng ký | Chợ Phú Thọ</title><link rel="stylesheet" href="css/style.css"></head>
+<body class="auth-page">
+<header class="site-header"><div class="topbar container-wide"><a href="index.html" class="logo">🛒 Chợ Phú Thọ</a><a href="index.html" class="top-manage">← Trang chủ</a></div></header>
+<main class="container auth-shell">
+<section class="auth-box auth-card">
+<div class="auth-kicker">TẠO TÀI KHOẢN</div><h1>Đăng ký khách mua</h1>
+<p>Tài khoản khách dùng để xem tin, lưu tin yêu thích và xem số điện thoại người bán.</p>
+<form onsubmit="registerCustomer(event)">
+<label>Họ và tên<input name="fullName" required placeholder="Nguyễn Văn A"></label>
+<label>Số điện thoại<input name="phone" type="tel" required placeholder="09xx xxx xxx"></label>
+<label>Email<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+<label>Mật khẩu<input name="password" type="password" required autocomplete="new-password" minlength="6" placeholder="Ít nhất 6 ký tự"></label>
+<label>Nhập lại mật khẩu<input name="confirmPassword" type="password" required autocomplete="new-password" minlength="6"></label>
+<div id="authStatus" class="auth-status" aria-live="polite"></div>
+<button class="primary-full" type="submit">Tạo tài khoản khách</button>
+</form>
+<div class="auth-links"><a href="dang-nhap.html">Đã có tài khoản</a><span>•</span><a href="dang-ky-nha-ban-hang.html">Đăng ký nhà bán hàng</a></div>
+</section>
+<aside class="auth-side"><span class="eyebrow">BẠN MUỐN BÁN HÀNG?</span><h2>Mở tài khoản nhà bán hàng riêng</h2><p class="side-copy">Nhà bán hàng cần nộp hồ sơ xác minh giấy tờ 2 mặt. Sau khi Admin duyệt, tài khoản mới có quyền đăng tin.</p><a class="hero-button" href="dang-ky-nha-ban-hang.html">Đăng ký nhà bán hàng →</a></aside>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-<script src="js/auth.js"></script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js"></script><script src="js/auth.js"></script>
+</body></html>
