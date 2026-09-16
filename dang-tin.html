@@ -18,24 +18,25 @@
     <div class="auth-box wide-box">
         <span class="eyebrow">ĐĂNG TIN MIỄN PHÍ</span>
         <h2>Đăng sản phẩm hoặc dịch vụ</h2>
-        <p>Chọn đúng danh mục và khu vực để tin đăng tiếp cận đúng người đang cần.</p>
+        <p>Tin mới sẽ được kiểm duyệt trước khi hiển thị công khai.</p>
 
         <label>Danh mục *</label>
-        <select id="network">
+        <select id="category">
             <option value="">-- Chọn danh mục --</option>
-            <option value="Bất động sản">🏠 Bất động sản</option>
-            <option value="Xe cộ">🚗 Xe cộ</option>
-            <option value="Điện tử">📱 Điện tử</option>
-            <option value="Dịch vụ">🛠️ Dịch vụ</option>
-            <option value="Việc làm">💼 Việc làm</option>
-            <option value="Đồ gia dụng">🛋️ Đồ gia dụng</option>
-            <option value="Thời trang">👕 Thời trang</option>
-            <option value="Thú cưng">🐶 Thú cưng</option>
-            <option value="Khác">📦 Khác</option>
+            <option>Bất động sản</option><option>Xe cộ</option><option>Điện tử</option><option>Dịch vụ</option>
+            <option>Việc làm</option><option>Đồ gia dụng</option><option>Thời trang</option><option>Thú cưng</option><option>Khác</option>
+        </select>
+
+        <label>Danh mục con</label>
+        <select id="subcategory">
+            <option value="">-- Chọn danh mục con --</option>
+            <option>Sửa chữa</option><option>Vận chuyển</option><option>Vệ sinh</option><option>Xây dựng</option>
+            <option>Gia sư</option><option>Nhà bán</option><option>Đất bán</option><option>Phòng trọ</option>
+            <option>Ô tô</option><option>Xe máy</option><option>Điện thoại</option><option>Laptop</option><option>Việc làm</option><option>Khác</option>
         </select>
 
         <label>Tiêu đề tin *</label>
-        <input type="text" id="title" placeholder="Ví dụ: Nhận sửa điện nước tại Việt Trì">
+        <input type="text" id="title" maxlength="140" placeholder="Ví dụ: Nhận sửa điện nước tại Việt Trì">
 
         <label>Giá / mức phí</label>
         <input type="number" id="price" min="0" placeholder="Để trống nếu thỏa thuận">
@@ -47,17 +48,38 @@
             <option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
         </select>
 
-        <label>Thông tin liên hệ thêm</label>
-        <input type="text" id="simNumber" placeholder="Zalo / website / mã dịch vụ (không bắt buộc)">
+        <label>Số điện thoại liên hệ</label>
+        <input type="tel" id="contactPhone" placeholder="Ví dụ: 09xxxxxxxx">
+
+        <label>Zalo</label>
+        <input type="text" id="contactZalo" placeholder="Số Zalo hoặc tên Zalo">
+
+        <label>Ảnh tin đăng <span class="muted">(tối đa 8 ảnh, mỗi ảnh 8MB)</span></label>
+        <input type="file" id="listingImages" accept="image/jpeg,image/png,image/webp" multiple>
+        <div id="imagePreview" class="image-preview-grid"></div>
 
         <label>Mô tả chi tiết</label>
-        <textarea id="description" rows="8" placeholder="Mô tả dịch vụ, phạm vi phục vụ, thời gian làm việc, kinh nghiệm, điều kiện giao dịch..."></textarea>
+        <textarea id="description" rows="8" maxlength="5000" placeholder="Mô tả dịch vụ, phạm vi phục vụ, thời gian làm việc, kinh nghiệm, điều kiện giao dịch..."></textarea>
 
         <button class="btn-post" onclick="postSim()">Đăng tin</button>
     </div>
 </main>
+<script>
+document.getElementById('listingImages')?.addEventListener('change', function () {
+    const box = document.getElementById('imagePreview');
+    box.innerHTML = '';
+    [...this.files].slice(0, 8).forEach(file => {
+        const url = URL.createObjectURL(file);
+        const img = document.createElement('img');
+        img.src = url; img.alt = file.name;
+        img.onload = () => URL.revokeObjectURL(url);
+        box.appendChild(img);
+    });
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/main.js"></script>
+<script src="js/marketplace.js"></script>
 </body>
 </html>
