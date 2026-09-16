@@ -12,9 +12,6 @@ function setBusy(form, busy) {
     button.disabled = busy;
     button.textContent = busy ? "Đang xử lý..." : button.dataset.defaultText;
 }
-async function createCustomerProfile(userId, fullName, phone) {
-    return (await supabaseClient.from("profiles").insert({ id: userId, full_name: fullName, phone, role: "customer" })).error;
-}
 async function registerCustomer(event) {
     event.preventDefault();
     const form = event.target;
@@ -58,21 +55,42 @@ async function registerSeller(event) {
     if (password.length < 6) return setAuthStatus("Mật khẩu cần ít nhất 6 ký tự.");
     if (password !== confirmPassword) return setAuthStatus("Mật khẩu nhập lại không khớp.");
     setBusy(form, true);
-    const { data, error } = await supabaseClient.auth.signUp({ email, password, options: { data: { full_name: fullName, phone, account_type: "seller" } } });
-    if (error || !data.user) { setBusy(form, false); return setAuthStatus(error?.message || "Không tạo được tài khoản."); }
-    const userId = data.user.id;
-    const profileError = await createCustomerProfile(userId, fullName, phone);
-    if (profileError) { setBusy(form, false); return setAuthStatus(profileError.message); }
-    if (!data.session) { setBusy(form, false); return setAuthStatus("Tài khoản đã tạo nhưng cần xác nhận email. Hãy xác nhận email rồi đăng nhập để hoàn tất hồ sơ.", "success"); }
+
+    const { data, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: fullName, phone, account_type: "seller" } }
+    });
+    if (error || !data.user) {
+        setBusy(form, false);
+        return setAuthStatus(error?.message || "Không tạo được tài khoản.");
+    }
+
+    // Không tự INSERT profiles ở đây. Supabase đã có trigger on_auth_user_created
+    // tạo profile khi tài khoản được tạo. Policy profiles chỉ cho phép user tự tạo
+    // profile với role=customer, nên INSERT seller/customer lần nữa sẽ gây lỗi RLS.
+    if (!data.session) {
+        setBusy(form, false);
+        return setAuthStatus("Tài khoản đã tạo. Hãy xác nhận email Gmail trước, sau đó đăng nhập lại để hoàn tất hồ sơ nhà bán hàng.", "success");
+    }
+
     try {
         const stamp = Date.now();
-        const frontPath = `${userId}/front-${stamp}.${fileExt(front.name)}`;
-        const backPath = `${userId}/back-${stamp}.${fileExt(back.name)}`;
+        const frontPath = `${data.user.id}/front-${stamp}.${fileExt(front.name)}`;
+        const backPath = `${data.user.id}/back-${stamp}.${fileExt(back.name)}`;
         const a = await supabaseClient.storage.from(VERIFY_BUCKET).upload(frontPath, front, { upsert: false, contentType: front.type });
         if (a.error) throw a.error;
         const b = await supabaseClient.storage.from(VERIFY_BUCKET).upload(backPath, back, { upsert: false, contentType: back.type });
         if (b.error) throw b.error;
-        const result = await supabaseClient.from("seller_applications").insert({ user_id: userId, full_name: fullName, phone, cccd_number: documentNumber, cccd_front_path: frontPath, cccd_back_path: backPath, status: "pending" });
+        const result = await supabaseClient.from("seller_applications").insert({
+            user_id: data.user.id,
+            full_name: fullName,
+            phone,
+            cccd_number: documentNumber,
+            cccd_front_path: frontPath,
+            cccd_back_path: backPath,
+            status: "pending"
+        });
         if (result.error) throw result.error;
         await supabaseClient.auth.signOut();
         setBusy(form, false);
@@ -81,7 +99,7 @@ async function registerSeller(event) {
     } catch (e) {
         console.error(e);
         setBusy(form, false);
-        setAuthStatus("Tài khoản đã tạo nhưng hồ sơ xác minh chưa hoàn tất. Vui lòng liên hệ Admin để xử lý.");
+        setAuthStatus("Tài khoản đã tạo nhưng hồ sơ xác minh chưa hoàn tất. Vui lòng đăng nhập lại sau khi xác nhận email và tiếp tục hồ sơ.");
     }
 }
 async function loginUser(event) {
