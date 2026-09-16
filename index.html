@@ -3,196 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Chợ Phú Thọ - Mua bán rao vặt</title>
-
+    <meta name="description" content="Chợ Phú Thọ - mua bán SIM số đẹp tại Phú Thọ">
+    <title>Chợ Phú Thọ - Mua bán SIM số đẹp</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
 <header>
-
     <div class="header">
-
-        <div class="logo">
-    🛒 Chợ Phú Thọ
-</div>
-<div id="accountArea">
-    <a href="dang-nhap.html">Đăng nhập</a>
-</div>
-
-<a href="dang-tin.html" class="post-button">
-    + Đăng tin
-</a>
-<div id="userArea"></div>
-<a href="quan-ly-tin.html"
-   class="btn-post">
-
-    Quản lý tin
-
-</a>
-
-
-        <div class="search">
-            <input
-                type="text"
-                placeholder="Tìm kiếm sản phẩm..."
-            >
-
-            <button>
-                Tìm
-            </button>
-        </div>
-
+        <a href="index.html" class="logo">🛒 Chợ Phú Thọ</a>
+        <div id="accountArea"></div>
+        <a href="dang-tin.html" class="post-button">+ Đăng tin</a>
+        <a href="quan-ly-tin.html" class="btn-post top-manage">Quản lý tin</a>
     </div>
-
+    <div class="header-search container-wide">
+        <div class="search">
+            <input id="searchInput" type="search" placeholder="Tìm số SIM, tiêu đề, nhà mạng, khu vực...">
+            <button id="searchButton" type="button">Tìm kiếm</button>
+        </div>
+    </div>
 </header>
 
-<div class="container">
+<main class="container">
+    <section class="hero">
+        <div>
+            <span class="hero-badge">📍 Chuyên Phú Thọ</span>
+            <h1>Mua bán SIM số đẹp<br><span>nhanh chóng, dễ dàng</span></h1>
+            <p>Tìm SIM theo nhà mạng, khu vực và mức giá. Tin đăng được Admin kiểm duyệt trước khi hiển thị.</p>
+        </div>
+        <a href="dang-tin.html" class="hero-button">Đăng bán SIM ngay →</a>
+    </section>
 
-    <div class="location">
-        📍 Khu vực: <strong>Phú Thọ</strong>
+    <section class="filter-panel">
+        <div>
+            <label>Nhà mạng</label>
+            <select id="networkFilter">
+                <option value="">Tất cả nhà mạng</option>
+                <option value="Viettel">Viettel</option>
+                <option value="Vinaphone">Vinaphone</option>
+                <option value="Mobifone">Mobifone</option>
+                <option value="Vietnamobile">Vietnamobile</option>
+            </select>
+        </div>
+        <div>
+            <label>Khu vực</label>
+            <select id="locationFilter">
+                <option value="">Tất cả khu vực</option>
+                <option value="Việt Trì">Việt Trì</option>
+                <option value="Phú Thọ">Phú Thọ</option>
+                <option value="Lâm Thao">Lâm Thao</option>
+                <option value="Thanh Sơn">Thanh Sơn</option>
+                <option value="Thanh Ba">Thanh Ba</option>
+                <option value="Đoan Hùng">Đoan Hùng</option>
+                <option value="Hạ Hòa">Hạ Hòa</option>
+                <option value="Cẩm Khê">Cẩm Khê</option>
+            </select>
+        </div>
+        <div>
+            <label>Giá từ</label>
+            <input id="minPrice" type="number" min="0" placeholder="0">
+        </div>
+        <div>
+            <label>Giá đến</label>
+            <input id="maxPrice" type="number" min="0" placeholder="Không giới hạn">
+        </div>
+    </section>
+
+    <section class="category-strip">
+        <a href="index.html">📱 <strong>SIM số đẹp</strong><small>Kho SIM mới nhất</small></a>
+        <a href="#listings">🔥 <strong>Tin mới</strong><small>Đã được duyệt</small></a>
+        <a href="dang-tin.html">🏪 <strong>Bán SIM</strong><small>Đăng tin miễn phí</small></a>
+        <a href="quan-ly-tin.html">📋 <strong>Quản lý tin</strong><small>Tin của bạn</small></a>
+    </section>
+
+    <section id="listings">
+        <div class="section-heading">
+            <div><span class="eyebrow">MỚI NHẤT</span><h2>Tin SIM mới đăng</h2></div>
+            <span class="section-note">Tin đã được Admin duyệt</span>
+        </div>
+        <div class="products"></div>
+    </section>
+</main>
+
+<footer>
+    <div class="container footer-inner">
+        <strong>🛒 Chợ Phú Thọ</strong>
+        <span>Nền tảng mua bán SIM số đẹp tại Phú Thọ</span>
+        <a href="admin-login.html">Quản trị</a>
     </div>
+</footer>
 
-    <h2>Danh mục</h2>
-    <a
-    href="danh-muc.html"
-    class="view-category"
->
-    Xem tất cả danh mục →
-</a>
-
-    <div class="categories">
-
-        <div class="category">🏠<br>Bất động sản</div>
-
-        <div class="category">🚗<br>Ô tô</div>
-
-        <div class="category">🏍️<br>Xe máy</div>
-
-        <div class="category">📱<br>Điện thoại</div>
-
-        <div class="category">💻<br>Máy tính</div>
-
-        <div class="category">🛋️<br>Đồ gia dụng</div>
-
-        <div class="category">💼<br>Việc làm</div>
-
-        <div class="category">🐶<br>Thú cưng</div>
-
-        <div class="category">👕<br>Thời trang</div>
-
-        <div class="category">📦<br>Khác</div>
-
-    </div>
-
-
-    <h2>Tin đăng mới</h2>
-
-    <a href="chi-tiet.html" class="product-link"></a>
-    <div class="products">
-
-
-        <div class="product">
-
-            <img src="https://picsum.photos/400/300?1">
-
-            <div class="product-content">
-
-                <div class="title">
-                    iPhone 15 Pro 256GB
-                </div>
-
-
-                <div class="price">
-                    18.500.000 đ
-                </div>
-
-                <div class="location-small">
-                    📍 Việt Trì, Phú Thọ
-                </div>
-
-            </div>
-
-        </div>
-        </a>
-
-<a href="chi-tiet.html" class="product-link">
-        <div class="product">
-
-            <img src="https://picsum.photos/400/300?2">
-
-            <div class="product-content">
-
-                <div class="title">
-                    Honda SH 2023
-                </div>
-
-                <div class="price">
-                    65.000.000 đ
-                </div>
-
-                <div class="location-small">
-                    📍 Lâm Thao, Phú Thọ
-                </div>
-
-            </div>
-
-        </div>
-        </a>
-
-<a href="chi-tiet.html" class="product-link"></a>
-        <div class="product">
-
-            <img src="https://picsum.photos/400/300?3">
-
-            <div class="product-content">
-
-                <div class="title">
-                    Nhà đất cần bán
-                </div>
-
-                <div class="price">
-                    1.850.000.000 đ
-                </div>
-
-                <div class="location-small">
-                    📍 Phù Ninh, Phú Thọ
-                </div>
-
-            </div>
-
-        </div>
-        </a>
-
-<a href="chi-tiet.html" class="product-link"></a>
-        <div class="product">
-
-            <img src="https://picsum.photos/400/300?4">
-
-            <div class="product-content">
-
-                <div class="title">
-                    Laptop Dell
-                </div>
-
-                <div class="price">
-                    12.000.000 đ
-                </div>
-
-                <div class="location-small">
-                    📍 Thanh Sơn, Phú Thọ
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-</a>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/main.js"></script>
