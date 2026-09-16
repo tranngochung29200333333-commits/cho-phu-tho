@@ -70,6 +70,26 @@
     }
   }
 
+  async function logoutUser() {
+    try {
+      if (typeof supabaseClient === 'undefined') {
+        window.location.href = 'dang-nhap.html';
+        return;
+      }
+      const { error } = await supabaseClient.auth.signOut();
+      if (error) {
+        console.error('[Chợ Phú Thọ] Logout error:', error);
+        alert('Đăng xuất chưa thành công. Vui lòng thử lại.');
+        return;
+      }
+      window.location.replace('index.html');
+    } catch (error) {
+      console.error('[Chợ Phú Thọ] Logout exception:', error);
+      alert('Đăng xuất chưa thành công. Vui lòng thử lại.');
+    }
+  }
+  window.logoutUser = logoutUser;
+
   async function refreshAccountAndLocation() {
     try {
       if (typeof supabaseClient === 'undefined') return;
@@ -99,7 +119,8 @@
           const metadataName = user.user_metadata?.full_name || user.user_metadata?.name || '';
           const name = escapeValue(profile?.full_name || metadataName || user.email?.split('@')[0] || 'Bạn');
           const role = profile?.role === 'admin' ? 'Quản trị viên' : profile?.role === 'seller' ? 'Nhà cung cấp' : 'Khách hàng';
-          area.innerHTML = `<div class="account-chip"><span>👋 Xin chào, <strong>${name}</strong></span><small>${role}</small><button type="button" onclick="logoutUser()">Đăng xuất</button></div>`;
+          area.innerHTML = `<div class="account-chip"><span>👋 Xin chào, <strong>${name}</strong></span><small>${role}</small><button type="button" id="logoutButton">Đăng xuất</button></div>`;
+          document.getElementById('logoutButton')?.addEventListener('click', logoutUser);
         }
       }
 
@@ -119,7 +140,7 @@
         window.setTimeout(() => refreshAccountAndLocation(), 100);
       });
     } catch (error) {
-      console.warn('Auth listener error', error);
+      console.warn('Auth listener error:', error);
     }
     window.addEventListener('storage', (event) => {
       if (event.key === 'choPhuThoLocation') refreshAccountAndLocation();
