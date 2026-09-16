@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang người đăng - Chợ Phú Thọ</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="topbar container-wide">
+    <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
+    <a href="index.html" class="top-manage">Trang chủ</a>
+    <a href="dang-tin.html" class="post-button">+ Đăng tin</a>
+  </div>
+</header>
+<main class="container">
+  <section class="auth-box wide-box" id="sellerProfile"><div class="loading">Đang tải thông tin người đăng...</div></section>
+  <section class="section-block">
+    <div class="section-heading"><h2>Tin đang đăng</h2></div>
+    <div class="products" id="sellerListings"><div class="loading">Đang tải...</div></div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/main.js"></script>
+<script src="js/marketplace.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const id = new URLSearchParams(location.search).get('id');
+  const profileBox = document.getElementById('sellerProfile');
+  const listingBox = document.getElementById('sellerListings');
+  if (!id) { profileBox.innerHTML = '<div class="empty-state">Không tìm thấy người đăng.</div>'; return; }
+  const { data: profile, error: pErr } = await supabaseClient.from('profiles').select('full_name,phone').eq('id', id).maybeSingle();
+  if (pErr || !profile) { profileBox.innerHTML = '<div class="empty-state">Không tìm thấy người đăng.</div>'; return; }
+  profileBox.innerHTML = `<span class="eyebrow">NGƯỜI CUNG CẤP</span><h2>${escapeHtml(profile.full_name || 'Người đăng')}</h2>${profile.phone ? `<a class="contact-phone" href="tel:${profile.phone.replace(/[^0-9+]/g,'')}">☎️ Liên hệ</a>` : ''}`;
+  const { data: listings } = await supabaseClient.from('listings').select('*').eq('seller_id', id).eq('status','approved').order('created_at',{ascending:false});
+  if (!listings?.length) { listingBox.innerHTML = '<div class="empty-state">Người này chưa có tin đang hiển thị.</div>'; return; }
+  window.homeListingImages = {};
+  for (const item of listings) { window.homeListingImages[item.id] = await loadImages(item.id); }
+  listingBox.innerHTML = listings.map(item => {
+    const img = window.homeListingImages[item.id]?.[0]?.image_url || '';
+    const fallback = typeof SERVICE_PLACEHOLDER !== 'undefined' ? SERVICE_PLACEHOLDER : '';
+    return `<a href="chi-tiet.html?id=${encodeURIComponent(item.id)}" class="product-link"><article class="product"><img src="${img || fallback}" alt="${escapeHtml(item.title)}"><div class="product-content"><div class="listing-category">${escapeHtml(item.category || item.network || 'Khác')}</div><div class="title">${escapeHtml(item.title)}</div><div class="price">${formatPrice(item.price)}</div><div class="location-small">📍 ${escapeHtml(item.location || 'Phú Thọ')}</div></div></article></a>`;
+  }).join('');
+});
+</script>
+</body>
+</html>
