@@ -70,25 +70,21 @@
     }
   }
 
-  async function logoutUser() {
+  async function performLogout() {
     try {
-      if (typeof supabaseClient === 'undefined') {
-        window.location.href = 'dang-nhap.html';
-        return;
-      }
-      const { error } = await supabaseClient.auth.signOut();
-      if (error) {
-        console.error('[Chợ Phú Thọ] Logout error:', error);
-        alert('Đăng xuất chưa thành công. Vui lòng thử lại.');
-        return;
-      }
-      window.location.replace('index.html');
+      await supabaseClient.auth.signOut();
     } catch (error) {
-      console.error('[Chợ Phú Thọ] Logout exception:', error);
-      alert('Đăng xuất chưa thành công. Vui lòng thử lại.');
+      console.warn('Logout error', error);
     }
+    window.location.replace('index.html');
   }
-  window.logoutUser = logoutUser;
+
+  function bindLogoutButton() {
+    const button = document.getElementById('logoutButton');
+    if (!button || button.dataset.bound === '1') return;
+    button.dataset.bound = '1';
+    button.addEventListener('click', performLogout);
+  }
 
   async function refreshAccountAndLocation() {
     try {
@@ -103,24 +99,13 @@
           area.innerHTML = '<a href="dang-nhap.html">Đăng nhập</a><span class="account-separator">|</span><a href="dang-ky.html">Đăng ký</a>';
         } else {
           let profile = null;
-          for (let attempt = 0; attempt < 3; attempt += 1) {
-            const result = await supabaseClient
-              .from('profiles')
-              .select('full_name, phone, role')
-              .eq('id', user.id)
-              .maybeSingle();
-            if (!result.error && result.data) {
-              profile = result.data;
-              break;
-            }
-            await new Promise(resolve => setTimeout(resolve, 250));
-          }
-
+          const result = await supabaseClient.from('profiles').select('full_name, phone, role').eq('id', user.id).maybeSingle();
+          if (!result.error) profile = result.data || null;
           const metadataName = user.user_metadata?.full_name || user.user_metadata?.name || '';
           const name = escapeValue(profile?.full_name || metadataName || user.email?.split('@')[0] || 'Bạn');
-          const role = profile?.role === 'admin' ? 'Quản trị viên' : profile?.role === 'seller' ? 'Nhà cung cấp' : 'Khách hàng';
-          area.innerHTML = `<div class="account-chip"><span>👋 Xin chào, <strong>${name}</strong></span><small>${role}</small><button type="button" id="logoutButton">Đăng xuất</button></div>`;
-          document.getElementById('logoutButton')?.addEventListener('click', logoutUser);
+          const role = profile?.role === 'admin' ? 'Quản trị viên' : profile?.role === 'seller' ? 'Nhà bán hàng' : 'Khách hàng';
+          area.innerHTML = `<div class="account-chip"><span>👋 Xin chào, <strong>${name}</strong></span><small>${role}</small><button id="logoutButton" class="account-logout" type="button">Đăng xuất</button></div>`;
+          bindLogoutButton();
         }
       }
 
@@ -135,12 +120,11 @@
   function watchAuthAndLocation() {
     if (typeof supabaseClient === 'undefined') return;
     try {
-      supabaseClient.auth.onAuthStateChange((event) => {
-        console.log('[Chợ Phú Thọ] Auth event:', event);
-        window.setTimeout(() => refreshAccountAndLocation(), 100);
+      supabaseClient.auth.onAuthStateChange(() => {
+        window.setTimeout(refreshAccountAndLocation, 100);
       });
     } catch (error) {
-      console.warn('Auth listener error:', error);
+      console.warn('Auth listener error', error);
     }
     window.addEventListener('storage', (event) => {
       if (event.key === 'choPhuThoLocation') refreshAccountAndLocation();
@@ -151,6 +135,7 @@
   window.platformLoadSettings = loadSiteSettings;
   window.platformTrackView = trackListingView;
   window.platformRefreshAccountAndLocation = refreshAccountAndLocation;
+  window.platformLogout = performLogout;
 
   document.addEventListener('DOMContentLoaded', async () => {
     if (typeof supabaseClient !== 'undefined') {
