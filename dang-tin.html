@@ -1,165 +1,37 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Đăng tin - Chợ Phú Thọ</title>
-
+    <title>Đăng tin bán SIM - Chợ Phú Thọ</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
-    <header class="header">
-
-        <div class="container">
-
-            <a href="index.html" class="logo">
-                🛒 Chợ Phú Thọ
-            </a>
-
-            <a href="index.html">
-                Trang chủ
-            </a>
-
-        </div>
-
-    </header>
-
-
-    <main class="container">
-
-        <div class="auth-box">
-
-            <h2>Đăng tin bán SIM</h2>
-
-            <p>
-                Nhập thông tin SIM bạn muốn bán
-            </p>
-
-
-            <label>Số SIM</label>
-
-            <input
-                type="text"
-                id="simNumber"
-                placeholder="Ví dụ: 0988 888 888"
-            >
-
-
-            <label>Tiêu đề</label>
-
-            <input
-                type="text"
-                id="title"
-                placeholder="Ví dụ: SIM số đẹp 0988 888 888"
-            >
-
-
-            <label>Giá bán</label>
-
-            <input
-                type="number"
-                id="price"
-                placeholder="Ví dụ: 5000000"
-            >
-
-
-            <label>Nhà mạng</label>
-
-            <select id="network">
-
-                <option value="">
-                    -- Chọn nhà mạng --
-                </option>
-
-                <option value="Viettel">
-                    Viettel
-                </option>
-
-                <option value="Vinaphone">
-                    Vinaphone
-                </option>
-
-                <option value="Mobifone">
-                    Mobifone
-                </option>
-
-                <option value="Vietnamobile">
-                    Vietnamobile
-                </option>
-
-            </select>
-
-
-            <label>Khu vực</label>
-
-            <select id="location">
-
-                <option value="Việt Trì">
-                    Việt Trì
-                </option>
-
-                <option value="Phú Thọ">
-                    Phú Thọ
-                </option>
-
-                <option value="Lâm Thao">
-                    Lâm Thao
-                </option>
-
-                <option value="Thanh Sơn">
-                    Thanh Sơn
-                </option>
-
-                <option value="Thanh Ba">
-                    Thanh Ba
-                </option>
-
-                <option value="Đoan Hùng">
-                    Đoan Hùng
-                </option>
-
-                <option value="Hạ Hòa">
-                    Hạ Hòa
-                </option>
-
-                <option value="Cẩm Khê">
-                    Cẩm Khê
-                </option>
-
-            </select>
-
-
-            <label>Mô tả</label>
-
-            <textarea
-                id="description"
-                rows="6"
-                placeholder="Mô tả chi tiết về SIM..."
-            ></textarea>
-
-
-            <button
-                class="btn-post"
-                onclick="postSim()"
-            >
-                Đăng tin
-            </button>
-
-
-        </div>
-
-    </main>
-
-
+<header>
+    <div class="header">
+        <a href="index.html" class="logo">🛒 Chợ Phú Thọ</a>
+        <a href="index.html">Trang chủ</a>
+        <a href="quan-ly-tin.html">Tin của tôi</a>
+    </div>
+</header>
+<main class="container">
+    <div class="auth-box wide-box">
+        <span class="eyebrow">NHÀ BÁN HÀNG</span>
+        <h2>Đăng tin bán SIM</h2>
+        <p>Tin mới sẽ ở trạng thái chờ duyệt cho tới khi Admin kiểm tra.</p>
+        <label>Số SIM *</label><input type="text" id="simNumber" placeholder="Ví dụ: 0988 888 888">
+        <label>Tiêu đề *</label><input type="text" id="title" placeholder="Ví dụ: SIM tam hoa 0988 888 888">
+        <label>Giá bán *</label><input type="number" id="price" min="0" placeholder="5000000">
+        <label>Nhà mạng *</label>
+        <select id="network"><option value="">-- Chọn nhà mạng --</option><option>Viettel</option><option>Vinaphone</option><option>Mobifone</option><option>Vietnamobile</option></select>
+        <label>Khu vực *</label>
+        <select id="location"><option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Thanh Sơn</option><option>Thanh Ba</option><option>Đoan Hùng</option><option>Hạ Hòa</option><option>Cẩm Khê</option></select>
+        <label>Mô tả</label><textarea id="description" rows="7" placeholder="Mô tả tình trạng, cam kết, giao dịch..."></textarea>
+        <button class="btn-post" onclick="postSim()">Đăng tin</button>
+    </div>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/main.js"></script>
-<script src="js/auth.js"></script>
-
 </body>
-
 </html>
