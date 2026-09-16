@@ -24,13 +24,24 @@ async function registerCustomer(event) {
     if (password.length < 6) return setAuthStatus("Mật khẩu cần ít nhất 6 ký tự.");
     if (password !== confirmPassword) return setAuthStatus("Mật khẩu nhập lại không khớp.");
     setBusy(form, true);
-    const { data, error } = await supabaseClient.auth.signUp({ email, password, options: { data: { full_name: fullName, phone, account_type: "customer" } } });
-    if (error || !data.user) { setBusy(form, false); return setAuthStatus(error?.message || "Không tạo được tài khoản."); }
-    const profileError = await createCustomerProfile(data.user.id, fullName, phone);
-    if (profileError) { setBusy(form, false); return setAuthStatus(profileError.message); }
+
+    const { data: fnData, error: fnError } = await supabaseClient.functions.invoke("demo-customer-signup", {
+        body: { email, password, fullName, phone }
+    });
+    if (fnError || !fnData?.ok) {
+        setBusy(form, false);
+        return setAuthStatus(fnData?.error || fnError?.message || "Không tạo được tài khoản.");
+    }
+
+    const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (loginError || !loginData.user) {
+        setBusy(form, false);
+        return setAuthStatus(loginError?.message || "Tài khoản đã tạo nhưng chưa đăng nhập được.");
+    }
+
     setBusy(form, false);
-    setAuthStatus(data.session ? "Đăng ký thành công. Đang chuyển trang..." : "Đăng ký thành công. Hãy xác nhận email rồi đăng nhập.", "success");
-    setTimeout(() => window.location.href = data.session ? "index.html" : "dang-nhap.html", 900);
+    setAuthStatus("Đăng ký thành công. Đang chuyển trang...", "success");
+    setTimeout(() => window.location.href = "index.html", 700);
 }
 function fileExt(name) { return (String(name || "jpg").split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg"; }
 async function registerSeller(event) {
