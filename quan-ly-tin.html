@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffba00">
     <title>Quản lý tin - Chợ Phú Thọ</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/marketplace-v2.css?v=20260916-11">
+    <link rel="stylesheet" href="css/premium-ui.css?v=20260916-3">
+    <link rel="stylesheet" href="css/account-chat-premium.css?v=20260916-7">
 </head>
 <body>
 <header class="site-header">
@@ -12,6 +16,7 @@
         <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
         <div class="top-actions">
             <a href="index.html" class="top-manage">Trang chủ</a>
+            <a href="chat.html" class="top-manage">💬 Tin nhắn</a>
             <a href="dang-tin.html" class="post-button">+ Đăng tin</a>
         </div>
     </div>
@@ -22,15 +27,16 @@
             <div>
                 <span class="eyebrow">NHÀ BÁN HÀNG</span>
                 <h2>Tin đăng của tôi</h2>
-                <p class="muted">Bạn có thể xem lại cả tin đang chờ duyệt, tin đã duyệt và tin bị ẩn.</p>
+                <p class="muted">Theo dõi tin đã duyệt, chờ duyệt và tin đã ẩn. Bạn có thể sửa hoặc hiển thị lại tin.</p>
             </div>
             <a class="btn-post" href="dang-tin.html">+ Đăng tin</a>
         </div>
         <div id="myProducts"></div>
     </div>
 </main>
+<nav class="mobile-bottom-nav" aria-label="Điều hướng mobile"><a class="mobile-nav-item" href="index.html">⌂<span>Trang chủ</span></a><a class="mobile-nav-item active" href="quan-ly-tin.html">▤<span>Quản lý tin</span></a><a class="mobile-nav-post" href="dang-tin.html">＋<span>Đăng tin</span></a><a class="mobile-nav-item" href="chat.html">◌<span>Tin nhắn</span></a><a class="mobile-nav-item" href="tai-khoan.html">●<span>Tài khoản</span></a></nav>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js?v=20260916-3"></script>
-<script src="js/manage-listings.js?v=20260916-1"></script>
+<script src="js/supabase.js?v=20260916-5"></script>
+<script src="js/manage-listings.js?v=20260916-2"></script>
 </body>
 </html>
