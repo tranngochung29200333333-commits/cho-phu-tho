@@ -1,142 +1,15 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Chợ Phú Thọ - nền tảng rao vặt và dịch vụ cho người dân toàn tỉnh Phú Thọ.">
-    <meta name="theme-color" content="#ffba00">
-    <title>Chợ Phú Thọ - Rao vặt & Dịch vụ</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="Chợ Phú Thọ - nền tảng rao vặt và dịch vụ cho người dân toàn tỉnh Phú Thọ."><meta name="theme-color" content="#ffba00"><title>Chợ Phú Thọ - Rao vặt & Dịch vụ</title><link rel="stylesheet" href="css/style.css"></head>
 <body>
-<header class="site-header">
-    <div class="topbar container-wide">
-        <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
-        <div id="accountArea" class="account-area"></div>
-        <a href="dang-tin.html" class="post-button">+ Đăng tin</a>
-    </div>
-    <div class="search-wrap">
-        <div class="container-wide search-row">
-            <button type="button" class="location-button" id="locationButton">📍 <span id="selectedLocation">Chọn khu vực</span></button>
-            <div class="search main-search">
-                <input id="searchInput" type="search" placeholder="Tìm sản phẩm, dịch vụ, việc làm...">
-                <button id="searchButton" type="button">Tìm kiếm</button>
-            </div>
-        </div>
-    </div>
-</header>
-
-<main class="container home-page">
-    <section class="hero-board">
-        <div class="hero-copy">
-            <span class="eyebrow">CHỢ ĐỊA PHƯƠNG PHÚ THỌ</span>
-            <h1>Mua bán, tìm dịch vụ<br><span>ngay gần bạn</span></h1>
-            <p>Kết nối người cần và người cung cấp trong toàn khu vực Phú Thọ. Tìm theo danh mục, khu vực và khoảng cách.</p>
-            <div class="hero-actions">
-                <a href="dang-tin.html" class="hero-button">Đăng tin miễn phí</a>
-                <a href="danh-muc.html" class="hero-button light">Khám phá danh mục</a>
-            </div>
-        </div>
-        <div class="hero-illustration" aria-hidden="true">
-            <div class="scene-card card-one">🏠<strong>Sửa nhà</strong><small>Gần bạn</small></div>
-            <div class="scene-card card-two">🚚<strong>Vận chuyển</strong><small>Nhận chở hàng</small></div>
-            <div class="scene-card card-three">💼<strong>Việc làm</strong><small>Tìm người / tìm việc</small></div>
-            <div class="scene-circle">📍</div>
-        </div>
-    </section>
-
-    <section class="location-banner" id="locationBanner">
-        <div>
-            <strong>📍 Vị trí của bạn</strong>
-            <span id="locationStatus">Chưa chọn khu vực. Bật vị trí để xem tin gần bạn.</span>
-        </div>
-        <button type="button" class="outline-button" id="locationBannerButton">Xác nhận vị trí</button>
-    </section>
-
-    <section class="section-block">
-        <div class="section-heading">
-            <div><span class="eyebrow">KHÁM PHÁ</span><h2>Danh mục phổ biến</h2></div>
-            <a href="danh-muc.html" class="see-all">Xem tất cả →</a>
-        </div>
-        <div class="category-grid">
-            <a class="category-card" href="danh-muc.html?category=Bất động sản">🏠<strong>Bất động sản</strong><small>Nhà, đất, phòng trọ</small></a>
-            <a class="category-card" href="danh-muc.html?category=Xe cộ">🚗<strong>Xe cộ</strong><small>Ô tô, xe máy, vận tải</small></a>
-            <a class="category-card" href="danh-muc.html?category=Điện tử">📱<strong>Điện tử</strong><small>Điện thoại, laptop, đồ dùng</small></a>
-            <a class="category-card" href="danh-muc.html?category=Dịch vụ">🛠️<strong>Dịch vụ</strong><small>Sửa chữa, vận chuyển</small></a>
-            <a class="category-card" href="danh-muc.html?category=Việc làm">💼<strong>Việc làm</strong><small>Tuyển dụng, tìm việc</small></a>
-            <a class="category-card" href="danh-muc.html?category=Đồ gia dụng">🛋️<strong>Đồ gia dụng</strong><small>Mua bán đồ dùng</small></a>
-            <a class="category-card" href="danh-muc.html?category=Thời trang">👕<strong>Thời trang</strong><small>Quần áo, phụ kiện</small></a>
-            <a class="category-card" href="danh-muc.html?category=Thú cưng">🐶<strong>Thú cưng</strong><small>Pet và phụ kiện</small></a>
-        </div>
-    </section>
-
-    <section class="service-banner">
-        <div>
-            <span class="eyebrow">DỊCH VỤ TẠI ĐỊA PHƯƠNG</span>
-            <h2>Cần người làm việc gì? Hãy tìm ngay.</h2>
-            <p>Sửa điện nước • Chuyển nhà • Vệ sinh • Cơ khí • Gia sư • Chăm sóc cây • Thi công...</p>
-        </div>
-        <a href="dang-tin.html" class="dark-button">Đăng dịch vụ</a>
-    </section>
-
-    <section id="listings" class="section-block">
-        <div class="section-heading">
-            <div><span class="eyebrow">TIN MỚI</span><h2>Tin đăng quanh bạn</h2></div>
-            <label class="nearby-toggle"><input type="checkbox" id="nearbyOnly"> Chỉ trong bán kính 25 km</label>
-        </div>
-        <section class="filter-panel">
-            <label>Danh mục
-                <select id="categoryFilter">
-                    <option value="">Tất cả</option>
-                    <option>Bất động sản</option><option>Xe cộ</option><option>Điện tử</option><option>Dịch vụ</option>
-                    <option>Việc làm</option><option>Đồ gia dụng</option><option>Thời trang</option><option>Thú cưng</option><option>Khác</option>
-                </select>
-            </label>
-            <label>Khu vực
-                <select id="locationFilter">
-                    <option value="">Tất cả khu vực Phú Thọ</option>
-                    <option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option>
-                    <option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option>
-                    <option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
-                </select>
-            </label>
-            <label>Giá từ<input id="minPrice" type="number" min="0" placeholder="0"></label>
-            <label>Giá đến<input id="maxPrice" type="number" min="0" placeholder="Không giới hạn"></label>
-        </section>
-        <div class="products"></div>
-    </section>
-</main>
-
-<footer>
-    <div class="container footer-inner">
-        <div><strong>🛒 Chợ Phú Thọ</strong><span>Nền tảng rao vặt & dịch vụ địa phương</span></div>
-        <nav><a href="danh-muc.html">Danh mục</a><a href="dang-tin.html">Đăng tin</a><a href="quan-ly-tin.html">Tin của tôi</a><a href="admin-login.html">Quản trị</a></nav>
-    </div>
-</footer>
-
-<div class="location-modal" id="locationModal" aria-hidden="true">
-    <div class="location-backdrop" data-close-location></div>
-    <div class="location-dialog" role="dialog" aria-modal="true" aria-labelledby="locationTitle">
-        <button type="button" class="modal-close" data-close-location>×</button>
-        <div class="modal-icon">📍</div>
-        <h2 id="locationTitle">Xác nhận vị trí của bạn</h2>
-        <p>Cho phép vị trí để ưu tiên tin và dịch vụ gần bạn. Nếu không muốn chia sẻ GPS, bạn có thể chọn khu vực thủ công.</p>
-        <button type="button" class="primary-full" id="allowLocation">Cho phép vị trí</button>
-        <button type="button" class="secondary-full" id="manualLocation">Chọn khu vực thủ công</button>
-        <div class="manual-location-select" id="manualLocationBox" hidden>
-            <select id="manualLocationSelect">
-                <option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option>
-                <option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option>
-                <option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
-            </select>
-            <button type="button" class="primary-full" id="saveManualLocation">Lưu khu vực</button>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-<script src="js/main.js"></script>
-<script src="js/marketplace.js"></script>
-</body>
-</html>
+<header class="site-header"><div class="topbar container-wide"><a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a><div id="accountArea" class="account-area"><a href="dang-nhap.html">Đăng nhập</a><span class="account-separator">|</span><a href="dang-ky.html">Đăng ký</a></div><a href="dang-tin.html" class="post-button">+ Đăng tin</a></div>
+<div class="search-wrap"><div class="container-wide search-row"><button type="button" class="location-button" id="locationButton">📍 <span id="selectedLocation">Chọn khu vực</span></button><div class="search main-search"><input id="searchInput" type="search" placeholder="Tìm sản phẩm, dịch vụ, việc làm..."><button id="searchButton" type="button">Tìm kiếm</button></div></div></div></header>
+<main class="container home-page"><section class="hero-board"><div class="hero-copy"><span class="eyebrow">CHỢ ĐỊA PHƯƠNG PHÚ THỌ</span><h1>Mua bán, tìm dịch vụ<br><span>ngay gần bạn</span></h1><p>Kết nối người cần và người cung cấp trong toàn khu vực Phú Thọ. Tìm theo danh mục, khu vực và khoảng cách.</p><div class="hero-actions"><a href="dang-tin.html" class="hero-button">Đăng tin miễn phí</a><a href="danh-muc.html" class="hero-button light">Khám phá danh mục</a></div></div><div class="hero-illustration" aria-hidden="true"><div class="scene-card card-one">🏠<strong>Sửa nhà</strong><small>Gần bạn</small></div><div class="scene-card card-two">🚚<strong>Vận chuyển</strong><small>Nhận chở hàng</small></div><div class="scene-card card-three">💼<strong>Việc làm</strong><small>Tìm người / tìm việc</small></div><div class="scene-circle">📍</div></div></section>
+<section class="location-banner" id="locationBanner"><div><strong>📍 Vị trí của bạn</strong><span id="locationStatus">Chưa chọn khu vực. Bật vị trí để xem tin gần bạn.</span></div><button type="button" class="outline-button" id="locationBannerButton">Xác nhận vị trí</button></section>
+<section class="section-block"><div class="section-heading"><div><span class="eyebrow">KHÁM PHÁ</span><h2>Danh mục phổ biến</h2></div><a href="danh-muc.html" class="see-all">Xem tất cả →</a></div><div class="category-grid"><a class="category-card" href="danh-muc.html?category=Bất động sản">🏠<strong>Bất động sản</strong><small>Nhà, đất, phòng trọ</small></a><a class="category-card" href="danh-muc.html?category=Xe cộ">🚗<strong>Xe cộ</strong><small>Ô tô, xe máy, vận tải</small></a><a class="category-card" href="danh-muc.html?category=Điện tử">📱<strong>Điện tử</strong><small>Điện thoại, laptop, đồ dùng</small></a><a class="category-card" href="danh-muc.html?category=Dịch vụ">🛠️<strong>Dịch vụ</strong><small>Sửa chữa, vận chuyển</small></a><a class="category-card" href="danh-muc.html?category=Việc làm">💼<strong>Việc làm</strong><small>Tuyển dụng, tìm việc</small></a><a class="category-card" href="danh-muc.html?category=Đồ gia dụng">🛋️<strong>Đồ gia dụng</strong><small>Mua bán đồ dùng</small></a><a class="category-card" href="danh-muc.html?category=Thời trang">👕<strong>Thời trang</strong><small>Quần áo, phụ kiện</small></a><a class="category-card" href="danh-muc.html?category=Thú cưng">🐶<strong>Thú cưng</strong><small>Pet và phụ kiện</small></a></div></section>
+<section class="service-banner"><div><span class="eyebrow">DỊCH VỤ TẠI ĐỊA PHƯƠNG</span><h2>Cần người làm việc gì? Hãy tìm ngay.</h2><p>Sửa điện nước • Chuyển nhà • Vệ sinh • Cơ khí • Gia sư • Chăm sóc cây • Thi công...</p></div><a href="dang-tin.html" class="dark-button">Đăng dịch vụ</a></section>
+<section id="listings" class="section-block"><div class="section-heading"><div><span class="eyebrow">TIN MỚI</span><h2>Tin đăng quanh bạn</h2></div><label class="nearby-toggle"><input type="checkbox" id="nearbyOnly"> Chỉ trong bán kính 25 km</label></div><section class="filter-panel"><label>Danh mục<select id="categoryFilter"><option value="">Tất cả</option><option>Bất động sản</option><option>Xe cộ</option><option>Điện tử</option><option>Dịch vụ</option><option>Việc làm</option><option>Đồ gia dụng</option><option>Thời trang</option><option>Thú cưng</option><option>Khác</option></select></label><label>Khu vực<select id="locationFilter"><option value="">Tất cả khu vực Phú Thọ</option><option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option><option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option><option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option></select></label><label>Giá từ<input id="minPrice" type="number" min="0" placeholder="0"></label><label>Giá đến<input id="maxPrice" type="number" min="0" placeholder="Không giới hạn"></label></section><div class="products"></div></section></main>
+<footer><div class="container footer-inner"><div><strong>🛒 Chợ Phú Thọ</strong><span>Nền tảng rao vặt & dịch vụ địa phương</span></div><nav><a href="danh-muc.html">Danh mục</a><a href="dang-tin.html">Đăng tin</a><a href="quan-ly-tin.html">Tin của tôi</a><a href="admin-login.html">Quản trị</a></nav></div></footer>
+<div class="location-modal" id="locationModal" aria-hidden="true"><div class="location-backdrop" data-close-location></div><div class="location-dialog" role="dialog" aria-modal="true" aria-labelledby="locationTitle"><button type="button" class="modal-close" data-close-location>×</button><div class="modal-icon">📍</div><h2 id="locationTitle">Xác nhận vị trí của bạn</h2><p>Cho phép vị trí để ưu tiên tin và dịch vụ gần bạn. Nếu không muốn chia sẻ GPS, bạn có thể chọn khu vực thủ công.</p><button type="button" class="primary-full" id="allowLocation">Cho phép vị trí</button><button type="button" class="secondary-full" id="manualLocation">Chọn khu vực thủ công</button><div class="manual-location-select" id="manualLocationBox" hidden><select id="manualLocationSelect"><option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option><option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option><option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option></select><button type="button" class="primary-full" id="saveManualLocation">Lưu khu vực</button></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js"></script><script src="js/main.js"></script><script src="js/marketplace.js"></script>
+</body></html>
