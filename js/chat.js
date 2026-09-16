@@ -21,7 +21,7 @@
     pollTimer=setInterval(()=>{loadConversations();if(activeUser&&!loadingThread)loadThread(activeUser,activeListing);},15000);
   }
   function renderShell(){
-    document.getElementById('chatShell').innerHTML='<aside class="chat-list"><div class="chat-list-head"><div><strong>Trao đổi online</strong><small class="chat-online-status">● Đang kết nối...</small></div><button id="chatRefresh" type="button" title="Làm mới">↻</button></div><div id="conversationList"><div class="loading">Đang tải...</div></div></aside><section class="chat-main"><div id="chatHeader" class="chat-header"><div><strong>Chọn cuộc trò chuyện</strong><small>Trao đổi trực tiếp với người mua hoặc nhà bán hàng</small></div></div><div id="messageList" class="message-list"><div class="empty-state"><p>Chọn một cuộc trò chuyện để bắt đầu.</p></div></div><form id="messageForm" class="message-form"><input id="messageInput" maxlength="1000" placeholder="Nhập tin nhắn..." autocomplete="off"><button type="submit">Gửi</button></form></section>';
+    document.getElementById('chatShell').innerHTML='<aside class="chat-list"><div class="chat-list-head"><div><strong>💬 Cuộc trò chuyện</strong><small class="chat-online-status">● Đang kết nối...</small></div><button id="chatRefresh" type="button" title="Làm mới danh sách">↻</button></div><div id="conversationList"><div class="loading">Đang tải cuộc trò chuyện...</div></div></aside><section class="chat-main"><div id="chatHeader" class="chat-header"><div><strong>🤝 Kết nối &amp; trao đổi</strong><small>Chọn một cuộc trò chuyện để tiếp tục nhắn tin với người mua hoặc nhà bán hàng.</small></div></div><div id="messageList" class="message-list"><div class="empty-state"><div class="empty-icon">💬</div><h3>Kết nối với người mua &amp; nhà bán hàng</h3><p>Lịch sử trò chuyện của bạn sẽ luôn hiển thị ở danh sách bên trên.</p></div></div><form id="messageForm" class="message-form"><input id="messageInput" maxlength="1000" placeholder="Nhập tin nhắn..." autocomplete="off"><button type="submit">Gửi</button></form></section>';
     document.getElementById('chatRefresh').onclick=loadConversations;document.getElementById('messageForm').onsubmit=sendMessage;
   }
   async function loadConversations(){
@@ -36,7 +36,7 @@
       if(!map.has(key))map.set(key,m);
     }
     const ids=[...map.keys()];await Promise.all(ids.map(id=>getProfile(id)));
-    if(!map.size){box.innerHTML='<div class="empty-state"><p>Chưa có cuộc trò chuyện.</p><small>Mở một tin đăng và chọn “Trao đổi online”.</small></div>';return;}
+    if(!map.size){box.innerHTML='<div class="empty-state"><div class="empty-icon">💬</div><p>Chưa có cuộc trò chuyện.</p><small>Mở một tin đăng và chọn “Trao đổi online” để bắt đầu.</small></div>';return;}
     box.innerHTML=[...map.entries()].map(([key,m])=>{
       const other=m.sender_id===me.id?m.receiver_id:m.sender_id,p=profileCache.get(other),unread=m.receiver_id===me.id&&!m.read_at;
       return `<button class="conversation-item ${other===activeUser?'active':''}" data-user="${esc(other)}" data-listing="${esc(m.listing_id||'')}"><div class="conversation-avatar">${p?.avatar_url?`<img src="${esc(p.avatar_url)}" alt="">`:'👤'}</div><strong>${esc(personName(p))}</strong>${unread?'<b class="chat-unread">Mới</b>':''}<span>${esc(m.body||'')}</span><small>${time(m.created_at)}</small></button>`;
