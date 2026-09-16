@@ -70,14 +70,40 @@
     }
   }
 
+  function refreshAccountAndLocation() {
+    try {
+      if (typeof window.renderAccountArea === 'function') window.renderAccountArea();
+      if (typeof window.setSelectedLocation === 'function') window.setSelectedLocation(localStorage.getItem('choPhuThoLocation') || '');
+    } catch (error) {
+      console.warn('Account/location refresh error', error);
+    }
+  }
+
+  function watchAuthAndLocation() {
+    if (typeof supabaseClient === 'undefined') return;
+    try {
+      supabaseClient.auth.onAuthStateChange(() => {
+        window.setTimeout(refreshAccountAndLocation, 50);
+      });
+    } catch (error) {
+      console.warn('Auth listener error', error);
+    }
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'choPhuThoLocation') refreshAccountAndLocation();
+    });
+  }
+
   window.platformHideExpiredListings = hideExpiredListings;
   window.platformLoadSettings = loadSiteSettings;
   window.platformTrackView = trackListingView;
+  window.platformRefreshAccountAndLocation = refreshAccountAndLocation;
 
   document.addEventListener('DOMContentLoaded', async () => {
     if (typeof supabaseClient !== 'undefined') {
       const settings = await loadSiteSettings();
       await applySeoForPage(settings);
+      watchAuthAndLocation();
+      window.setTimeout(refreshAccountAndLocation, 120);
       if (location.pathname.endsWith('/chi-tiet.html')) trackListingView();
     }
   });
