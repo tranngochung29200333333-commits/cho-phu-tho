@@ -1,45 +1,15 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản trị - Chợ Phú Thọ</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<header class="site-header">
-    <div class="topbar container-wide">
-        <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
-        <a href="index.html" class="top-manage">Trang chủ</a>
-        <button class="top-manage" onclick="logoutUser()">Đăng xuất</button>
-    </div>
-</header>
-<main class="container">
-    <div class="section-heading"><div><span class="eyebrow">QUẢN TRỊ</span><h1>Quản lý tin đăng</h1></div><span class="section-note">Kiểm duyệt trước khi hiển thị công khai</span></div>
-    <div class="admin-box">
-        <h2>📋 Tin đang chờ duyệt</h2>
-        <div id="pendingListings">Đang tải...</div>
-    </div>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Quản trị | Chợ Phú Thọ</title><link rel="stylesheet" href="css/style.css"></head>
+<body class="admin-page">
+<header class="site-header"><div class="topbar container-wide"><a href="index.html" class="logo">🛒 Chợ Phú Thọ</a><div class="admin-header-title">BẢNG ĐIỀU KHIỂN</div><div class="admin-header-actions"><span>Xin chào <b id="adminName">Admin</b></span><a href="index.html" class="top-manage">Trang chủ</a><button class="top-manage" onclick="logoutUser()">Đăng xuất</button></div></div></header>
+<main class="container admin-dashboard">
+<section class="section-heading"><div><span class="eyebrow">QUẢN TRỊ TOÀN BỘ WEBSITE</span><h1>Chợ Phú Thọ Admin</h1></div><span class="section-note">Kiểm duyệt, người bán, người dùng, tin đăng và báo cáo</span></section>
+<section class="stats-grid"><article><span>Người dùng</span><b id="statUsers">0</b></article><article><span>Tin đăng</span><b id="statListings">0</b></article><article><span>Chờ duyệt</span><b id="statPending">0</b></article><article><span>Báo cáo mới</span><b id="statReports">0</b></article></section>
+<section class="admin-box"><div class="section-heading"><div><span class="eyebrow">01</span><h2>Hồ sơ nhà bán hàng</h2></div></div><div id="sellerApplications"></div></section>
+<section class="admin-box"><div class="section-heading"><div><span class="eyebrow">02</span><h2>Quản lý tin đăng</h2></div><select id="listingStatus" onchange="loadListings()"><option value="">Tất cả</option><option value="pending">Chờ duyệt</option><option value="approved">Đã duyệt</option><option value="hidden">Đã ẩn</option></select></div><div id="adminListings"></div></section>
+<section class="admin-box"><div class="section-heading"><div><span class="eyebrow">03</span><h2>Người dùng</h2></div></div><div id="adminUsers"></div></section>
+<section class="admin-box"><div class="section-heading"><div><span class="eyebrow">04</span><h2>Báo cáo tin</h2></div></div><div id="adminReports"></div></section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-<script src="js/main.js"></script>
-<script>
-async function loadPendingListings(){
-    const {data:userData}=await supabaseClient.auth.getUser();
-    if(!userData.user){alert('Bạn cần đăng nhập Admin.');location.href='dang-nhap.html';return;}
-    const {data:profile,error:profileError}=await supabaseClient.from('profiles').select('role').eq('id',userData.user.id).single();
-    if(profileError||!profile||profile.role!=='admin'){alert('Bạn không có quyền Admin.');location.href='index.html';return;}
-    const {data:listings,error}=await supabaseClient.from('listings').select('*').eq('status','pending').order('created_at',{ascending:false});
-    const box=document.getElementById('pendingListings');
-    if(error){box.innerHTML='<p>Không tải được danh sách tin.</p>';return;}
-    if(!listings?.length){box.innerHTML='<p>🎉 Không có tin nào chờ duyệt.</p>';return;}
-    box.innerHTML=listings.map(item=>`<div class="admin-listing"><div class="listing-badge">${item.network||'Khác'}</div><h3>${item.title||''}</h3><p><strong>Giá:</strong> ${Number(item.price||0)?Number(item.price).toLocaleString('vi-VN')+' đ':'Thỏa thuận'}</p><p><strong>Khu vực:</strong> ${item.location||''}</p><p>${item.description||''}</p><button onclick="approveListing('${item.id}')">✅ Duyệt tin</button><button onclick="hideListing('${item.id}')">🙈 Ẩn tin</button><button onclick="deleteListing('${item.id}')">🗑 Xóa</button></div>`).join('');
-}
-async function approveListing(id){const {error}=await supabaseClient.from('listings').update({status:'approved'}).eq('id',id);if(error){alert('Duyệt tin thất bại: '+error.message);return}alert('✅ Đã duyệt tin!');loadPendingListings()}
-async function hideListing(id){const {error}=await supabaseClient.from('listings').update({status:'hidden'}).eq('id',id);if(error){alert('Ẩn tin thất bại: '+error.message);return}alert('Đã ẩn tin.');loadPendingListings()}
-async function deleteListing(id){if(!confirm('Bạn chắc chắn muốn xóa tin này?'))return;const {error}=await supabaseClient.from('listings').delete().eq('id',id);if(error){alert('Xóa tin thất bại: '+error.message);return}alert('🗑 Đã xóa tin.');loadPendingListings()}
-loadPendingListings();
-</script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js"></script><script src="js/admin.js"></script>
+</body></html>
