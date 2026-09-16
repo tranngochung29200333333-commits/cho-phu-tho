@@ -6,167 +6,40 @@
     <title>Quản trị - Chợ Phú Thọ</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
-<header class="header">
-    <div class="container">
-        <a href="index.html" class="logo">🛒 Chợ Phú Thọ</a>
-        <a href="index.html">Trang chủ</a>
-        <button onclick="logoutUser()">Đăng xuất</button>
+<header class="site-header">
+    <div class="topbar container-wide">
+        <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
+        <a href="index.html" class="top-manage">Trang chủ</a>
+        <button class="top-manage" onclick="logoutUser()">Đăng xuất</button>
     </div>
 </header>
-
 <main class="container">
-
-    <h1>⚙️ Quản trị website</h1>
-
+    <div class="section-heading"><div><span class="eyebrow">QUẢN TRỊ</span><h1>Quản lý tin đăng</h1></div><span class="section-note">Kiểm duyệt trước khi hiển thị công khai</span></div>
     <div class="admin-box">
         <h2>📋 Tin đang chờ duyệt</h2>
-
-        <div id="pendingListings">
-            Đang tải...
-        </div>
+        <div id="pendingListings">Đang tải...</div>
     </div>
-
 </main>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/main.js"></script>
-
 <script>
-async function loadPendingListings() {
-
-    const { data: userData } =
-        await supabaseClient.auth.getUser();
-
-    if (!userData.user) {
-        alert("Bạn cần đăng nhập Admin.");
-        window.location.href = "dang-nhap.html";
-        return;
-    }
-
-    const { data: profile, error: profileError } =
-        await supabaseClient
-            .from("profiles")
-            .select("role")
-            .eq("id", userData.user.id)
-            .single();
-
-    if (profileError || !profile || profile.role !== "admin") {
-        alert("Bạn không có quyền Admin.");
-        window.location.href = "index.html";
-        return;
-    }
-
-    const { data: listings, error } =
-        await supabaseClient
-            .from("listings")
-            .select("*")
-            .eq("status", "pending")
-            .order("created_at", { ascending: false });
-
-    if (error) {
-        console.error(error);
-        document.getElementById("pendingListings").innerHTML =
-            "<p>Không tải được danh sách tin.</p>";
-        return;
-    }
-
-    const box = document.getElementById("pendingListings");
-
-    if (!listings || listings.length === 0) {
-        box.innerHTML = "<p>🎉 Không có tin nào chờ duyệt.</p>";
-        return;
-    }
-
-    box.innerHTML = listings.map(item => `
-        <div class="admin-listing">
-            <h3>${item.title}</h3>
-
-            <p><strong>SIM:</strong> ${item.sim_number}</p>
-            <p><strong>Giá:</strong> ${Number(item.price).toLocaleString("vi-VN")} đ</p>
-            <p><strong>Nhà mạng:</strong> ${item.network}</p>
-            <p><strong>Khu vực:</strong> ${item.location}</p>
-            <p>${item.description || ""}</p>
-
-            <button onclick="approveListing('${item.id}')">
-                ✅ Duyệt tin
-            </button>
-
-            <button onclick="hideListing('${item.id}')">
-                🙈 Ẩn tin
-            </button>
-
-            <button onclick="deleteListing('${item.id}')">
-                🗑 Xóa
-            </button>
-        </div>
-    `).join("");
+async function loadPendingListings(){
+    const {data:userData}=await supabaseClient.auth.getUser();
+    if(!userData.user){alert('Bạn cần đăng nhập Admin.');location.href='dang-nhap.html';return;}
+    const {data:profile,error:profileError}=await supabaseClient.from('profiles').select('role').eq('id',userData.user.id).single();
+    if(profileError||!profile||profile.role!=='admin'){alert('Bạn không có quyền Admin.');location.href='index.html';return;}
+    const {data:listings,error}=await supabaseClient.from('listings').select('*').eq('status','pending').order('created_at',{ascending:false});
+    const box=document.getElementById('pendingListings');
+    if(error){box.innerHTML='<p>Không tải được danh sách tin.</p>';return;}
+    if(!listings?.length){box.innerHTML='<p>🎉 Không có tin nào chờ duyệt.</p>';return;}
+    box.innerHTML=listings.map(item=>`<div class="admin-listing"><div class="listing-badge">${item.network||'Khác'}</div><h3>${item.title||''}</h3><p><strong>Giá:</strong> ${Number(item.price||0)?Number(item.price).toLocaleString('vi-VN')+' đ':'Thỏa thuận'}</p><p><strong>Khu vực:</strong> ${item.location||''}</p><p>${item.description||''}</p><button onclick="approveListing('${item.id}')">✅ Duyệt tin</button><button onclick="hideListing('${item.id}')">🙈 Ẩn tin</button><button onclick="deleteListing('${item.id}')">🗑 Xóa</button></div>`).join('');
 }
-
-
-async function approveListing(id) {
-
-    const { error } =
-        await supabaseClient
-            .from("listings")
-            .update({ status: "approved" })
-            .eq("id", id);
-
-    if (error) {
-        alert("Duyệt tin thất bại: " + error.message);
-        return;
-    }
-
-    alert("✅ Đã duyệt tin!");
-    loadPendingListings();
-}
-
-
-async function hideListing(id) {
-
-    const { error } =
-        await supabaseClient
-            .from("listings")
-            .update({ status: "hidden" })
-            .eq("id", id);
-
-    if (error) {
-        alert("Ẩn tin thất bại: " + error.message);
-        return;
-    }
-
-    alert("Đã ẩn tin.");
-    loadPendingListings();
-}
-
-
-async function deleteListing(id) {
-
-    if (!confirm("Bạn chắc chắn muốn xóa tin này?")) {
-        return;
-    }
-
-    const { error } =
-        await supabaseClient
-            .from("listings")
-            .delete()
-            .eq("id", id);
-
-    if (error) {
-        alert("Xóa tin thất bại: " + error.message);
-        return;
-    }
-
-    alert("🗑 Đã xóa tin.");
-    loadPendingListings();
-}
-
-
+async function approveListing(id){const {error}=await supabaseClient.from('listings').update({status:'approved'}).eq('id',id);if(error){alert('Duyệt tin thất bại: '+error.message);return}alert('✅ Đã duyệt tin!');loadPendingListings()}
+async function hideListing(id){const {error}=await supabaseClient.from('listings').update({status:'hidden'}).eq('id',id);if(error){alert('Ẩn tin thất bại: '+error.message);return}alert('Đã ẩn tin.');loadPendingListings()}
+async function deleteListing(id){if(!confirm('Bạn chắc chắn muốn xóa tin này?'))return;const {error}=await supabaseClient.from('listings').delete().eq('id',id);if(error){alert('Xóa tin thất bại: '+error.message);return}alert('🗑 Đã xóa tin.');loadPendingListings()}
 loadPendingListings();
 </script>
-
 </body>
 </html>
