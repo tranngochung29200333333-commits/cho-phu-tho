@@ -3,44 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng tin bán SIM - Chợ Phú Thọ</title>
+    <title>Đăng tin - Chợ Phú Thọ</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header>
-    <div class="header">
-        <a href="index.html" class="logo">🛒 Chợ Phú Thọ</a>
-        <a href="index.html">Trang chủ</a>
-        <a href="quan-ly-tin.html">Tin của tôi</a>
+<header class="site-header">
+    <div class="topbar container-wide">
+        <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
+        <a href="index.html" class="top-manage">Trang chủ</a>
+        <a href="quan-ly-tin.html" class="top-manage">Tin của tôi</a>
     </div>
 </header>
 <main class="container">
     <div class="auth-box wide-box">
-        <span class="eyebrow">NHÀ BÁN HÀNG</span>
-        <h2>Đăng tin bán SIM</h2>
-        <p>Tin mới sẽ ở trạng thái chờ duyệt cho tới khi Admin kiểm tra.</p>
-        <label>Số SIM *</label><input type="text" id="simNumber" placeholder="Ví dụ: 0988 888 888">
-        <label>Tiêu đề *</label><input type="text" id="title" placeholder="Ví dụ: SIM tam hoa 0988 888 888">
-        <label>Giá bán *</label><input type="number" id="price" min="0" placeholder="5000000">
-        <label>Nhà mạng *</label>
-        <select id="network"><option value="">-- Chọn nhà mạng --</option><option>Viettel</option><option>Vinaphone</option><option>Mobifone</option><option>Vietnamobile</option></select>
+        <span class="eyebrow">ĐĂNG TIN MIỄN PHÍ</span>
+        <h2>Đăng sản phẩm hoặc dịch vụ</h2>
+        <p>Chọn đúng danh mục và khu vực để tin đăng tiếp cận đúng người đang cần.</p>
+
+        <label>Danh mục *</label>
+        <select id="network">
+            <option value="">-- Chọn danh mục --</option>
+            <option value="Bất động sản">🏠 Bất động sản</option>
+            <option value="Xe cộ">🚗 Xe cộ</option>
+            <option value="Điện tử">📱 Điện tử</option>
+            <option value="Dịch vụ">🛠️ Dịch vụ</option>
+            <option value="Việc làm">💼 Việc làm</option>
+            <option value="Đồ gia dụng">🛋️ Đồ gia dụng</option>
+            <option value="Thời trang">👕 Thời trang</option>
+            <option value="Thú cưng">🐶 Thú cưng</option>
+            <option value="Khác">📦 Khác</option>
+        </select>
+
+        <label>Tiêu đề tin *</label>
+        <input type="text" id="title" placeholder="Ví dụ: Nhận sửa điện nước tại Việt Trì">
+
+        <label>Giá / mức phí</label>
+        <input type="number" id="price" min="0" placeholder="Để trống nếu thỏa thuận">
+
         <label>Khu vực *</label>
         <select id="location">
-            <option>Việt Trì</option>
-            <option>Phú Thọ</option>
-            <option>Lâm Thao</option>
-            <option>Cẩm Khê</option>
-            <option>Hạ Hòa</option>
-            <option>Thanh Sơn</option>
-            <option>Tân Sơn</option>
-            <option>Yên Lập</option>
-            <option>Thanh Ba</option>
-            <option>Đoan Hùng</option>
-            <option>Phù Ninh</option>
-            <option>Thanh Thủy</option>
-            <option>Tam Nông</option>
+            <option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option>
+            <option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option>
+            <option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
         </select>
-        <label>Mô tả</label><textarea id="description" rows="7" placeholder="Mô tả tình trạng, cam kết, giao dịch..."></textarea>
+
+        <label>Thông tin liên hệ thêm</label>
+        <input type="text" id="simNumber" placeholder="Zalo / website / mã dịch vụ (không bắt buộc)">
+
+        <label>Mô tả chi tiết</label>
+        <textarea id="description" rows="8" placeholder="Mô tả dịch vụ, phạm vi phục vụ, thời gian làm việc, kinh nghiệm, điều kiện giao dịch..."></textarea>
+
         <button class="btn-post" onclick="postSim()">Đăng tin</button>
     </div>
 </main>
