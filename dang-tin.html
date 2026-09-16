@@ -1,85 +1,16 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng tin - Chợ Phú Thọ</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<header class="site-header">
-    <div class="topbar container-wide">
-        <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
-        <a href="index.html" class="top-manage">Trang chủ</a>
-        <a href="quan-ly-tin.html" class="top-manage">Tin của tôi</a>
-    </div>
-</header>
-<main class="container">
-    <div class="auth-box wide-box">
-        <span class="eyebrow">ĐĂNG TIN MIỄN PHÍ</span>
-        <h2>Đăng sản phẩm hoặc dịch vụ</h2>
-        <p>Tin mới sẽ được kiểm duyệt trước khi hiển thị công khai.</p>
-
-        <label>Danh mục *</label>
-        <select id="category">
-            <option value="">-- Chọn danh mục --</option>
-            <option>Bất động sản</option><option>Xe cộ</option><option>Điện tử</option><option>Dịch vụ</option>
-            <option>Việc làm</option><option>Đồ gia dụng</option><option>Thời trang</option><option>Thú cưng</option><option>Khác</option>
-        </select>
-
-        <label>Danh mục con</label>
-        <select id="subcategory">
-            <option value="">-- Chọn danh mục con --</option>
-            <option>Sửa chữa</option><option>Vận chuyển</option><option>Vệ sinh</option><option>Xây dựng</option>
-            <option>Gia sư</option><option>Nhà bán</option><option>Đất bán</option><option>Phòng trọ</option>
-            <option>Ô tô</option><option>Xe máy</option><option>Điện thoại</option><option>Laptop</option><option>Việc làm</option><option>Khác</option>
-        </select>
-
-        <label>Tiêu đề tin *</label>
-        <input type="text" id="title" maxlength="140" placeholder="Ví dụ: Nhận sửa điện nước tại Việt Trì">
-
-        <label>Giá / mức phí</label>
-        <input type="number" id="price" min="0" placeholder="Để trống nếu thỏa thuận">
-
-        <label>Khu vực *</label>
-        <select id="location">
-            <option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option>
-            <option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option>
-            <option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
-        </select>
-
-        <label>Số điện thoại liên hệ</label>
-        <input type="tel" id="contactPhone" placeholder="Ví dụ: 09xxxxxxxx">
-
-        <label>Zalo</label>
-        <input type="text" id="contactZalo" placeholder="Số Zalo hoặc tên Zalo">
-
-        <label>Ảnh tin đăng <span class="muted">(tối đa 8 ảnh, mỗi ảnh 8MB)</span></label>
-        <input type="file" id="listingImages" accept="image/jpeg,image/png,image/webp" multiple>
-        <div id="imagePreview" class="image-preview-grid"></div>
-
-        <label>Mô tả chi tiết</label>
-        <textarea id="description" rows="8" maxlength="5000" placeholder="Mô tả dịch vụ, phạm vi phục vụ, thời gian làm việc, kinh nghiệm, điều kiện giao dịch..."></textarea>
-
-        <button class="btn-post" onclick="postSim()">Đăng tin</button>
-    </div>
-</main>
-<script>
-document.getElementById('listingImages')?.addEventListener('change', function () {
-    const box = document.getElementById('imagePreview');
-    box.innerHTML = '';
-    [...this.files].slice(0, 8).forEach(file => {
-        const url = URL.createObjectURL(file);
-        const img = document.createElement('img');
-        img.src = url; img.alt = file.name;
-        img.onload = () => URL.revokeObjectURL(url);
-        box.appendChild(img);
-    });
-});
-</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-<script src="js/main.js"></script>
-<script src="js/marketplace.js"></script>
-</body>
-</html>
+<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Đăng tin - Chợ Phú Thọ</title><link rel="stylesheet" href="css/style.css"></head>
+<body><header class="site-header"><div class="topbar container-wide"><a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a><a href="index.html" class="top-manage">Trang chủ</a><a href="quan-ly-tin.html" class="top-manage">Tin của tôi</a></div></header>
+<main class="container"><div class="auth-box wide-box"><span class="eyebrow">ĐĂNG TIN MIỄN PHÍ</span><h2>Đăng sản phẩm hoặc dịch vụ</h2><p>Tin mới sẽ được kiểm duyệt trước khi hiển thị công khai.</p>
+<label>Danh mục *</label><select id="category"><option value="">-- Chọn danh mục --</option><option>Bất động sản</option><option>Xe cộ</option><option>Điện tử</option><option>Dịch vụ</option><option>Việc làm</option><option>Đồ gia dụng</option><option>Thời trang</option><option>Thú cưng</option><option>Khác</option></select>
+<label>Danh mục con</label><select id="subcategory"><option value="">-- Chọn danh mục con --</option><option>Nhà bán</option><option>Đất bán</option><option>Phòng trọ</option><option>Cho thuê</option><option>Ô tô</option><option>Xe máy</option><option>Xe tải</option><option>Điện thoại</option><option>Laptop</option><option>Sửa chữa</option><option>Vận chuyển</option><option>Vệ sinh</option><option>Xây dựng</option><option>Gia sư</option><option>Tuyển dụng</option><option>Tìm việc</option><option>Khác</option></select>
+<label>Tiêu đề tin *</label><input type="text" id="title" maxlength="140" placeholder="Ví dụ: Nhận sửa điện nước tại Việt Trì">
+<label>Giá / mức phí</label><input type="number" id="price" min="0" placeholder="Để trống nếu thỏa thuận">
+<label>Khu vực *</label><select id="location"><option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option><option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option><option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option></select>
+<label>Số điện thoại liên hệ</label><input type="tel" id="contactPhone" placeholder="09xxxxxxxx"><label>Zalo</label><input type="text" id="contactZalo" placeholder="Số Zalo hoặc tên Zalo">
+<label>Ảnh tin đăng <span class="muted">(tối đa 8 ảnh, mỗi ảnh 8MB)</span></label><input type="file" id="listingImages" accept="image/jpeg,image/png,image/webp" multiple><div id="imagePreview" class="image-preview-grid"></div>
+<label>Mô tả chi tiết</label><textarea id="description" rows="8" maxlength="5000" placeholder="Mô tả sản phẩm, dịch vụ, phạm vi phục vụ, thời gian làm việc..."></textarea>
+<button class="btn-post" onclick="postSim()">Đăng tin</button></div></main>
+<script>document.getElementById('listingImages')?.addEventListener('change',function(){const box=document.getElementById('imagePreview');box.innerHTML='';[...this.files].slice(0,8).forEach(file=>{const url=URL.createObjectURL(file),img=document.createElement('img');img.src=url;img.alt=file.name;img.onload=()=>URL.revokeObjectURL(url);box.appendChild(img);});});</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js"></script><script src="js/main.js"></script><script src="js/marketplace.js"></script><script src="js/posting.js"></script>
+</body></html>
