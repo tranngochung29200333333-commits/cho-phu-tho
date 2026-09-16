@@ -3,134 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Chợ Phú Thọ - mua bán SIM số đẹp, phục vụ các khu vực Phú Thọ">
-    <title>Chợ Phú Thọ - Mua bán SIM số đẹp</title>
+    <meta name="description" content="Chợ Phú Thọ - nền tảng rao vặt và dịch vụ cho người dân toàn tỉnh Phú Thọ.">
+    <meta name="theme-color" content="#ffba00">
+    <title>Chợ Phú Thọ - Rao vặt & Dịch vụ</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header>
-    <div class="header">
-        <a href="index.html" class="logo">🛒 Chợ Phú Thọ</a>
-        <div id="accountArea"></div>
+<header class="site-header">
+    <div class="topbar container-wide">
+        <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
+        <div id="accountArea" class="account-area"></div>
         <a href="dang-tin.html" class="post-button">+ Đăng tin</a>
-        <a href="quan-ly-tin.html" class="btn-post top-manage">Quản lý tin</a>
     </div>
-    <div class="header-search container-wide">
-        <div class="search">
-            <input id="searchInput" type="search" placeholder="Tìm số SIM, tiêu đề, nhà mạng, khu vực...">
-            <button id="searchButton" type="button">Tìm kiếm</button>
+    <div class="search-wrap">
+        <div class="container-wide search-row">
+            <button type="button" class="location-button" id="locationButton">📍 <span id="selectedLocation">Chọn khu vực</span></button>
+            <div class="search main-search">
+                <input id="searchInput" type="search" placeholder="Tìm sản phẩm, dịch vụ, việc làm...">
+                <button id="searchButton" type="button">Tìm kiếm</button>
+            </div>
         </div>
     </div>
 </header>
 
-<main class="container">
-    <section class="hero">
-        <div>
-            <span class="hero-badge">📍 Phục vụ các khu vực Phú Thọ</span>
-            <h1>Mua bán SIM số đẹp<br><span>trên toàn khu vực Phú Thọ</span></h1>
-            <p>Tìm SIM theo địa bàn quen thuộc, nhà mạng và mức giá. Tin đăng được Admin kiểm duyệt trước khi hiển thị.</p>
+<main class="container home-page">
+    <section class="hero-board">
+        <div class="hero-copy">
+            <span class="eyebrow">CHỢ ĐỊA PHƯƠNG PHÚ THỌ</span>
+            <h1>Mua bán, tìm dịch vụ<br><span>ngay gần bạn</span></h1>
+            <p>Kết nối người cần và người cung cấp dịch vụ trong toàn khu vực Phú Thọ. Tìm kiếm theo danh mục và khu vực nhanh chóng.</p>
+            <div class="hero-actions">
+                <a href="dang-tin.html" class="hero-button">Đăng tin miễn phí</a>
+                <a href="danh-muc.html" class="hero-button light">Khám phá danh mục</a>
+            </div>
         </div>
-        <a href="dang-tin.html" class="hero-button">Đăng bán SIM ngay →</a>
+        <div class="hero-illustration" aria-hidden="true">
+            <div class="scene-card card-one">🏠<strong>Sửa nhà</strong><small>Gần bạn</small></div>
+            <div class="scene-card card-two">🚚<strong>Vận chuyển</strong><small>Nhận chở hàng</small></div>
+            <div class="scene-card card-three">💼<strong>Việc làm</strong><small>Tìm người / tìm việc</small></div>
+            <div class="scene-circle">📍</div>
+        </div>
     </section>
 
-    <section class="area-section">
+    <section class="location-banner" id="locationBanner">
+        <div>
+            <strong>📍 Vị trí của bạn</strong>
+            <span id="locationStatus">Chưa chọn khu vực. Bật vị trí để xem tin gần bạn.</span>
+        </div>
+        <button type="button" class="outline-button" id="locationBannerButton">Xác nhận vị trí</button>
+    </section>
+
+    <section class="section-block">
         <div class="section-heading">
-            <div><span class="eyebrow">KHU VỰC</span><h2>Chọn khu vực bạn quan tâm</h2></div>
-            <span class="section-note">Theo các địa danh huyện, thành phố và thị xã quen thuộc của Phú Thọ trước sắp xếp</span>
+            <div><span class="eyebrow">KHÁM PHÁ</span><h2>Danh mục phổ biến</h2></div>
+            <a href="danh-muc.html" class="see-all">Xem tất cả →</a>
         </div>
-        <div class="area-grid">
-            <button type="button" onclick="selectArea('Việt Trì')">📍 Việt Trì</button>
-            <button type="button" onclick="selectArea('Phú Thọ')">📍 Phú Thọ</button>
-            <button type="button" onclick="selectArea('Lâm Thao')">📍 Lâm Thao</button>
-            <button type="button" onclick="selectArea('Cẩm Khê')">📍 Cẩm Khê</button>
-            <button type="button" onclick="selectArea('Hạ Hòa')">📍 Hạ Hòa</button>
-            <button type="button" onclick="selectArea('Thanh Sơn')">📍 Thanh Sơn</button>
-            <button type="button" onclick="selectArea('Tân Sơn')">📍 Tân Sơn</button>
-            <button type="button" onclick="selectArea('Yên Lập')">📍 Yên Lập</button>
-            <button type="button" onclick="selectArea('Thanh Ba')">📍 Thanh Ba</button>
-            <button type="button" onclick="selectArea('Đoan Hùng')">📍 Đoan Hùng</button>
-            <button type="button" onclick="selectArea('Phù Ninh')">📍 Phù Ninh</button>
-            <button type="button" onclick="selectArea('Thanh Thủy')">📍 Thanh Thủy</button>
-            <button type="button" onclick="selectArea('Tam Nông')">📍 Tam Nông</button>
+        <div class="category-grid">
+            <a class="category-card" href="danh-muc.html?category=bat-dong-san">🏠<strong>Bất động sản</strong><small>Nhà, đất, phòng trọ</small></a>
+            <a class="category-card" href="danh-muc.html?category=xe-co">🚗<strong>Xe cộ</strong><small>Ô tô, xe máy, vận tải</small></a>
+            <a class="category-card" href="danh-muc.html?category=dien-tu">📱<strong>Điện tử</strong><small>Điện thoại, laptop, đồ dùng</small></a>
+            <a class="category-card" href="danh-muc.html?category=dich-vu">🛠️<strong>Dịch vụ</strong><small>Sửa chữa, vận chuyển</small></a>
+            <a class="category-card" href="danh-muc.html?category=viec-lam">💼<strong>Việc làm</strong><small>Tuyển dụng, tìm việc</small></a>
+            <a class="category-card" href="danh-muc.html?category=do-gia-dung">🛋️<strong>Đồ gia dụng</strong><small>Mua bán đồ dùng</small></a>
+            <a class="category-card" href="danh-muc.html?category=thoi-trang">👕<strong>Thời trang</strong><small>Quần áo, phụ kiện</small></a>
+            <a class="category-card" href="danh-muc.html?category=thu-cung">🐶<strong>Thú cưng</strong><small>Pet và phụ kiện</small></a>
         </div>
     </section>
 
-    <section class="filter-panel">
+    <section class="service-banner">
         <div>
-            <label>Nhà mạng</label>
-            <select id="networkFilter">
-                <option value="">Tất cả nhà mạng</option>
-                <option value="Viettel">Viettel</option>
-                <option value="Vinaphone">Vinaphone</option>
-                <option value="Mobifone">Mobifone</option>
-                <option value="Vietnamobile">Vietnamobile</option>
-            </select>
+            <span class="eyebrow">DỊCH VỤ TẠI ĐỊA PHƯƠNG</span>
+            <h2>Cần người làm việc gì? Hãy tìm ngay.</h2>
+            <p>Sửa điện nước • Chuyển nhà • Vệ sinh • Cơ khí • Gia sư • Chăm sóc cây • Thi công...</p>
         </div>
-        <div>
-            <label>Khu vực</label>
-            <select id="locationFilter">
-                <option value="">Tất cả khu vực</option>
-                <option value="Việt Trì">Việt Trì</option>
-                <option value="Phú Thọ">Phú Thọ</option>
-                <option value="Lâm Thao">Lâm Thao</option>
-                <option value="Cẩm Khê">Cẩm Khê</option>
-                <option value="Hạ Hòa">Hạ Hòa</option>
-                <option value="Thanh Sơn">Thanh Sơn</option>
-                <option value="Tân Sơn">Tân Sơn</option>
-                <option value="Yên Lập">Yên Lập</option>
-                <option value="Thanh Ba">Thanh Ba</option>
-                <option value="Đoan Hùng">Đoan Hùng</option>
-                <option value="Phù Ninh">Phù Ninh</option>
-                <option value="Thanh Thủy">Thanh Thủy</option>
-                <option value="Tam Nông">Tam Nông</option>
-            </select>
-        </div>
-        <div>
-            <label>Giá từ</label>
-            <input id="minPrice" type="number" min="0" placeholder="0">
-        </div>
-        <div>
-            <label>Giá đến</label>
-            <input id="maxPrice" type="number" min="0" placeholder="Không giới hạn">
-        </div>
+        <a href="dang-tin.html" class="dark-button">Đăng dịch vụ</a>
     </section>
 
-    <section class="category-strip">
-        <a href="index.html">📱 <strong>SIM số đẹp</strong><small>Kho SIM mới nhất</small></a>
-        <a href="#listings">🔥 <strong>Tin mới</strong><small>Đã được duyệt</small></a>
-        <a href="dang-tin.html">🏪 <strong>Bán SIM</strong><small>Đăng tin miễn phí</small></a>
-        <a href="quan-ly-tin.html">📋 <strong>Quản lý tin</strong><small>Tin của bạn</small></a>
-    </section>
-
-    <section id="listings">
+    <section id="listings" class="section-block">
         <div class="section-heading">
-            <div><span class="eyebrow">MỚI NHẤT</span><h2>Tin SIM mới đăng</h2></div>
-            <span class="section-note">Tin đã được Admin duyệt</span>
+            <div><span class="eyebrow">TIN MỚI</span><h2>Tin đăng quanh bạn</h2></div>
+            <span class="section-note">Ưu tiên khu vực Phú Thọ</span>
         </div>
+        <section class="filter-panel">
+            <label>Danh mục
+                <select id="categoryFilter">
+                    <option value="">Tất cả</option>
+                    <option value="Bất động sản">Bất động sản</option>
+                    <option value="Xe cộ">Xe cộ</option>
+                    <option value="Điện tử">Điện tử</option>
+                    <option value="Dịch vụ">Dịch vụ</option>
+                    <option value="Việc làm">Việc làm</option>
+                    <option value="Đồ gia dụng">Đồ gia dụng</option>
+                    <option value="Thời trang">Thời trang</option>
+                    <option value="Thú cưng">Thú cưng</option>
+                    <option value="Khác">Khác</option>
+                </select>
+            </label>
+            <label>Khu vực
+                <select id="locationFilter">
+                    <option value="">Tất cả khu vực Phú Thọ</option>
+                    <option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option>
+                    <option>Hạ Hòa</option><option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option>
+                    <option>Thanh Ba</option><option>Đoan Hùng</option><option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
+                </select>
+            </label>
+            <label>Giá từ<input id="minPrice" type="number" min="0" placeholder="0"></label>
+            <label>Giá đến<input id="maxPrice" type="number" min="0" placeholder="Không giới hạn"></label>
+        </section>
         <div class="products"></div>
     </section>
 </main>
 
 <footer>
     <div class="container footer-inner">
-        <strong>🛒 Chợ Phú Thọ</strong>
-        <span>Nền tảng mua bán SIM số đẹp phục vụ các khu vực Phú Thọ</span>
-        <a href="admin-login.html">Quản trị</a>
+        <div><strong>🛒 Chợ Phú Thọ</strong><span>Nền tảng rao vặt & dịch vụ địa phương</span></div>
+        <nav><a href="danh-muc.html">Danh mục</a><a href="dang-tin.html">Đăng tin</a><a href="admin-login.html">Quản trị</a></nav>
     </div>
 </footer>
+
+<div class="location-modal" id="locationModal" aria-hidden="true">
+    <div class="location-backdrop" data-close-location></div>
+    <div class="location-dialog" role="dialog" aria-modal="true" aria-labelledby="locationTitle">
+        <button type="button" class="modal-close" data-close-location>×</button>
+        <div class="modal-icon">📍</div>
+        <h2 id="locationTitle">Xác nhận vị trí của bạn</h2>
+        <p>Chợ Phú Thọ có thể dùng vị trí của bạn để ưu tiên hiển thị tin và dịch vụ gần khu vực bạn đang ở. Trình duyệt sẽ hỏi quyền truy cập vị trí.</p>
+        <button type="button" class="primary-full" id="allowLocation">Cho phép vị trí</button>
+        <button type="button" class="secondary-full" id="manualLocation">Chọn khu vực thủ công</button>
+        <div class="manual-location-select" id="manualLocationBox" hidden>
+            <select id="manualLocationSelect">
+                <option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option>
+                <option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option>
+                <option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
+            </select>
+            <button type="button" class="primary-full" id="saveManualLocation">Lưu khu vực</button>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/main.js"></script>
-<script>
-function selectArea(area) {
-    const select = document.getElementById('locationFilter');
-    if (select) {
-        select.value = area;
-        select.dispatchEvent(new Event('change'));
-    }
-    document.getElementById('listings')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-</script>
 </body>
 </html>
