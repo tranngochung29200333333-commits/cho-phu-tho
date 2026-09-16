@@ -1,136 +1,29 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký - Chợ Phú Thọ</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
-<header>
-
-    <div class="header">
-
-        <div class="logo">
-            🛒 Chợ Phú Thọ
-        </div>
-
-    </div>
-
-</header>
-
-
-<div class="container">
-
+<header><div class="header"><a href="index.html" class="logo">🛒 Chợ Phú Thọ</a><a href="index.html">Trang chủ</a></div></header>
+<main class="container">
     <div class="auth-box">
-
-        <h2>Đăng ký tài khoản</h2>
-
-        <p>
-            Tham gia cộng đồng mua bán Phú Thọ
-        </p>
-
-
-        <label>
-            Họ và tên
-        </label>
-
-        <input
-            type="text"
-            id="fullname"
-            placeholder="Nhập họ và tên"
-        >
-
-
-        <label>
-            Số điện thoại
-        </label>
-
-        <input
-            type="tel"
-            id="phone"
-            placeholder="Nhập số điện thoại"
-        >
-        <label>
-    Email
-</label>
-
-<input
-    type="email"
-    id="email"
-    placeholder="Nhập email"
->
-
-
-        <label>
-            Mật khẩu
-        </label>
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Nhập mật khẩu"
-        >
-
-
-        <label>
-            Bạn là
-        </label>
-
-        <select id="accountType">
-
-            <option value="customer">
-                👤 Khách hàng
-            </option>
-
-            <option value="seller">
-                🏪 Nhà bán hàng
-            </option>
-
-        </select>
-
-
-        <button
-            class="btn-post"
-            onclick="registerUser()"
-        >
-            Đăng ký
-        </button>
-
-
-        <p class="auth-link">
-
-            Đã có tài khoản?
-
-            <a href="dang-nhap.html">
-                Đăng nhập
-            </a>
-
-        </p>
-
+        <h2>Tạo tài khoản</h2>
+        <p>Mua bán SIM số đẹp tại Phú Thọ</p>
+        <label>Họ và tên</label><input type="text" id="fullname" placeholder="Nguyễn Văn A">
+        <label>Số điện thoại</label><input type="tel" id="phone" placeholder="0988 888 888">
+        <label>Email</label><input type="email" id="email" placeholder="email@example.com">
+        <label>Mật khẩu</label><input type="password" id="password" placeholder="Ít nhất 6 ký tự">
+        <label>Bạn là</label>
+        <select id="accountType"><option value="customer">👤 Khách hàng</option><option value="seller">🏪 Nhà bán hàng</option></select>
+        <button class="btn-post" onclick="registerUser()">Đăng ký</button>
+        <p class="auth-link">Đã có tài khoản? <a href="dang-nhap.html">Đăng nhập</a></p>
     </div>
-
-</div>
-
-
-<script src="js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
-<script src="js/main.js"></script>
 <script src="js/auth.js"></script>
 </body>
-
 </html>
