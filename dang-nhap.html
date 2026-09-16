@@ -1,100 +1,25 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Chợ Phú Thọ</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
-<header>
-
-    <div class="header">
-
-        <div class="logo">
-            🛒 Chợ Phú Thọ
-        </div>
-
-    </div>
-
-</header>
-
-
-<div class="container">
-
+<header><div class="header"><a href="index.html" class="logo">🛒 Chợ Phú Thọ</a><a href="index.html">Trang chủ</a></div></header>
+<main class="container">
     <div class="auth-box">
-
         <h2>Đăng nhập</h2>
-
-        <p>
-            Đăng nhập tài khoản của bạn
-        </p>
-
-
-<label>
-    Email
-</label>
-
-<input
-    type="email"
-    id="loginEmail"
-    placeholder="Nhập email"
->
-
-
-        <label>
-            Mật khẩu
-        </label>
-
-        <input
-            type="password"
-            id="loginPassword"
-            placeholder="Nhập mật khẩu"
-        >
-
-
-        <button
-            class="btn-post"
-            onclick="loginUser()"
-        >
-            Đăng nhập
-        </button>
-
-
-        <p class="auth-link">
-
-            Chưa có tài khoản?
-
-            <a href="dang-ky.html">
-                Đăng ký
-            </a>
-
-        </p>
-
+        <p>Đăng nhập để mua bán và quản lý tin SIM.</p>
+        <label>Email</label><input type="email" id="loginEmail" placeholder="email@example.com">
+        <label>Mật khẩu</label><input type="password" id="loginPassword" placeholder="Mật khẩu">
+        <button class="btn-post" onclick="loginUser()">Đăng nhập</button>
+        <p class="auth-link">Chưa có tài khoản? <a href="dang-ky.html">Đăng ký</a></p>
     </div>
-
-</div>
-
-
+</main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
-<script src="js/main.js"></script>
 <script src="js/auth.js"></script>
-
 </body>
-
 </html>
