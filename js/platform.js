@@ -70,10 +70,42 @@
     }
   }
 
-  function refreshAccountAndLocation() {
+  async function refreshAccountAndLocation() {
     try {
-      if (typeof window.renderAccountArea === 'function') window.renderAccountArea();
-      if (typeof window.setSelectedLocation === 'function') window.setSelectedLocation(localStorage.getItem('choPhuThoLocation') || '');
+      if (typeof supabaseClient === 'undefined') return;
+
+      const area = document.getElementById('accountArea');
+      const { data: authData } = await supabaseClient.auth.getUser();
+      const user = authData?.user || null;
+
+      if (area) {
+        if (!user) {
+          area.innerHTML = '<a href="dang-nhap.html">Đăng nhập</a><span class="account-separator">|</span><a href="dang-ky.html">Đăng ký</a>';
+        } else {
+          let profile = null;
+          for (let attempt = 0; attempt < 3; attempt += 1) {
+            const result = await supabaseClient
+              .from('profiles')
+              .select('full_name, phone, role')
+              .eq('id', user.id)
+              .maybeSingle();
+            if (!result.error && result.data) {
+              profile = result.data;
+              break;
+            }
+            await new Promise(resolve => setTimeout(resolve, 250));
+          }
+
+          const metadataName = user.user_metadata?.full_name || user.user_metadata?.name || '';
+          const name = escapeValue(profile?.full_name || metadataName || user.email?.split('@')[0] || 'Bạn');
+          const role = profile?.role === 'admin' ? 'Quản trị viên' : profile?.role === 'seller' ? 'Nhà cung cấp' : 'Khách hàng';
+          area.innerHTML = `<div class="account-chip"><span>👋 Xin chào, <strong>${name}</strong></span><small>${role}</small><button type="button" onclick="logoutUser()">Đăng xuất</button></div>`;
+        }
+      }
+
+      if (typeof window.setSelectedLocation === 'function') {
+        window.setSelectedLocation(localStorage.getItem('choPhuThoLocation') || '');
+      }
     } catch (error) {
       console.warn('Account/location refresh error', error);
     }
@@ -82,8 +114,9 @@
   function watchAuthAndLocation() {
     if (typeof supabaseClient === 'undefined') return;
     try {
-      supabaseClient.auth.onAuthStateChange(() => {
-        window.setTimeout(refreshAccountAndLocation, 50);
+      supabaseClient.auth.onAuthStateChange((event) => {
+        console.log('[Chợ Phú Thọ] Auth event:', event);
+        window.setTimeout(() => refreshAccountAndLocation(), 100);
       });
     } catch (error) {
       console.warn('Auth listener error', error);
@@ -103,7 +136,7 @@
       const settings = await loadSiteSettings();
       await applySeoForPage(settings);
       watchAuthAndLocation();
-      window.setTimeout(refreshAccountAndLocation, 120);
+      await refreshAccountAndLocation();
       if (location.pathname.endsWith('/chi-tiet.html')) trackListingView();
     }
   });
