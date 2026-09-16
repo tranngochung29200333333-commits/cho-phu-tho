@@ -7,38 +7,25 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header>
-    <div class="header">
-        <a href="index.html" class="logo">🛒 Chợ Phú Thọ</a>
-        <a href="quan-ly-tin.html">Quản lý tin</a>
+<header class="site-header">
+    <div class="topbar container-wide">
+        <a href="index.html" class="logo">🛒 <span>Chợ Phú Thọ</span></a>
+        <a href="quan-ly-tin.html" class="top-manage">Quản lý tin</a>
     </div>
 </header>
 <main class="container">
-    <div class="auth-box">
+    <div class="auth-box wide-box">
+        <span class="eyebrow">QUẢN LÝ TIN</span>
         <h2>Sửa tin đăng</h2>
-        <p>Thay đổi thông tin SIM. Sau khi sửa, tin sẽ chờ Admin duyệt lại.</p>
-        <label>Số SIM</label><input type="text" id="editSimNumber">
+        <p>Sau khi sửa, tin sẽ được chuyển về trạng thái chờ Admin duyệt lại.</p>
+        <label>Thông tin liên hệ thêm</label><input type="text" id="editSimNumber" placeholder="Zalo / website / mã dịch vụ">
         <label>Tiêu đề</label><input type="text" id="editTitle">
-        <label>Giá bán</label><input type="number" id="editPrice" min="0">
-        <label>Nhà mạng</label>
-        <select id="editNetwork"><option>Viettel</option><option>Vinaphone</option><option>Mobifone</option><option>Vietnamobile</option></select>
+        <label>Giá / mức phí</label><input type="number" id="editPrice" min="0">
+        <label>Danh mục</label>
+        <select id="editNetwork"><option>Bất động sản</option><option>Xe cộ</option><option>Điện tử</option><option>Dịch vụ</option><option>Việc làm</option><option>Đồ gia dụng</option><option>Thời trang</option><option>Thú cưng</option><option>Khác</option></select>
         <label>Khu vực</label>
-        <select id="editLocation">
-            <option>Việt Trì</option>
-            <option>Phú Thọ</option>
-            <option>Lâm Thao</option>
-            <option>Cẩm Khê</option>
-            <option>Hạ Hòa</option>
-            <option>Thanh Sơn</option>
-            <option>Tân Sơn</option>
-            <option>Yên Lập</option>
-            <option>Thanh Ba</option>
-            <option>Đoan Hùng</option>
-            <option>Phù Ninh</option>
-            <option>Thanh Thủy</option>
-            <option>Tam Nông</option>
-        </select>
-        <label>Mô tả</label><textarea id="editDescription" rows="7"></textarea>
+        <select id="editLocation"><option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option><option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option><option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option></select>
+        <label>Mô tả</label><textarea id="editDescription" rows="8"></textarea>
         <button class="btn-post" onclick="saveEditedProduct()">Lưu thay đổi</button>
     </div>
 </main>
