@@ -5,41 +5,25 @@
 <header class="site-header"><div class="topbar container-wide"><a href="index.html" class="logo">🛒 Chợ Phú Thọ</a><a href="index.html" class="top-manage">← Trang chủ</a></div></header>
 <main class="container auth-shell seller-register-shell">
 <section class="auth-box auth-card">
-<div class="auth-kicker">HỒ SƠ NHÀ BÁN HÀNG</div>
-<h1>Đăng ký tài khoản bán hàng</h1>
-<p>Nhập thông tin tài khoản. Sau khi đăng ký, bạn cần xác nhận email Gmail rồi đăng nhập lại để hoàn tất hồ sơ CCCD gửi Admin kiểm tra.</p>
+<div class="auth-kicker">HỒ SƠ NHÀ BÁN HÀNG</div><h1>Đăng ký tài khoản bán hàng</h1>
+<p>Tài khoản được tạo ở trạng thái chờ duyệt. Admin kiểm tra thông tin xác minh trước khi cấp quyền đăng nhập bán hàng và đăng tin.</p>
 <form onsubmit="registerSeller(event)">
 <div class="form-grid-2"><label>Họ và tên<input name="fullName" required placeholder="Tên chủ tài khoản"></label><label>Số điện thoại<input name="phone" type="tel" required placeholder="09xx xxx xxx"></label></div>
 <label>Email<input name="email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
 <div class="form-grid-2"><label>Mật khẩu<input name="password" type="password" minlength="6" required autocomplete="new-password"></label><label>Nhập lại mật khẩu<input name="confirmPassword" type="password" minlength="6" required autocomplete="new-password"></label></div>
-<div id="initialStepNote" class="security-note">✉️ Bước 1: tạo tài khoản và xác nhận email. CCCD sẽ được tải ở bước 2 sau khi bạn đăng nhập bằng email đã xác nhận.</div>
-<div class="kyc-step" id="kycStep">
 <label>Số giấy tờ xác minh<input name="documentNumber" inputmode="numeric" pattern="[0-9]{9,12}" placeholder="Nhập số trên CCCD"></label>
 <div class="document-grid">
 <label class="upload-card"><span>📄 Mặt trước</span><small>Ảnh rõ nét, tối đa 8MB</small><input name="documentFront" type="file" accept="image/jpeg,image/png,image/webp"></label>
 <label class="upload-card"><span>📄 Mặt sau</span><small>Ảnh rõ nét, tối đa 8MB</small><input name="documentBack" type="file" accept="image/jpeg,image/png,image/webp"></label>
 </div>
 <div class="security-note">🔒 Hồ sơ xác minh được lưu trong khu vực riêng và chỉ tài khoản Admin được cấp quyền xem.</div>
-</div>
 <div id="authStatus" class="auth-status" aria-live="polite"></div>
-<button class="primary-full" type="submit">Tạo tài khoản &amp; xác nhận email</button>
+<button class="primary-full" type="submit">Tạo tài khoản nhà bán hàng</button>
 </form>
 <div class="auth-links"><a href="dang-nhap.html">Quay lại đăng nhập</a><span>•</span><a href="dang-ky.html">Đăng ký khách mua</a></div>
 </section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="js/supabase.js"></script><script src="js/auth.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const complete = new URLSearchParams(location.search).get('complete') === '1';
-  const form = document.querySelector('form');
-  const kyc = document.getElementById('kycStep');
-  const note = document.getElementById('initialStepNote');
-  if (!complete) {
-    if (kyc) kyc.hidden = true;
-    return;
-  }
-  if (kyc) kyc.hidden = false;
-  if (note) note.textContent = '✅ Email đã được xác nhận. Bước 2: tải CCCD và gửi hồ sơ để Admin kiểm tra.';
-});
-</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js?v=20260916-2"></script>
+<script src="js/auth.js?v=20260916-3"></script>
 </body></html>
