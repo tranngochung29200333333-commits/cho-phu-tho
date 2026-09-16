@@ -16,22 +16,17 @@
   function applyAnalytics(id) {
     if (!id || !/^G-[A-Z0-9_-]+$/i.test(id) || document.getElementById('gtag-script')) return;
     const script = document.createElement('script');
-    script.id = 'gtag-script';
-    script.async = true;
+    script.id = 'gtag-script'; script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
     document.head.appendChild(script);
     window.dataLayer = window.dataLayer || [];
     window.gtag = window.gtag || function(){window.dataLayer.push(arguments);};
-    window.gtag('js', new Date());
-    window.gtag('config', id);
+    window.gtag('js', new Date()); window.gtag('config', id);
   }
 
   function sessionKey() {
     let key = localStorage.getItem('choPhuThoViewSession');
-    if (!key) {
-      key = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-      localStorage.setItem('choPhuThoViewSession', key);
-    }
+    if (!key) { key = `${Date.now()}-${Math.random().toString(36).slice(2)}`; localStorage.setItem('choPhuThoViewSession', key); }
     return key;
   }
 
@@ -39,11 +34,8 @@
     const id = new URLSearchParams(location.search).get('id');
     if (!id || typeof supabaseClient === 'undefined') return;
     const key = sessionKey();
-    await supabaseClient.from('listing_views').insert({
-      listing_id: Number(id),
-      viewer_id: (await supabaseClient.auth.getUser()).data?.user?.id || null,
-      session_key: key
-    }).then(() => {});
+    const viewer = (await supabaseClient.auth.getUser()).data?.user;
+    await supabaseClient.from('listing_views').insert({ listing_id: id, viewer_id: viewer?.id || null, session_key: key }).then(() => {});
   }
 
   function hideExpiredListings(list) {
@@ -55,13 +47,12 @@
     const path = location.pathname;
     const siteName = settings.site_name || 'Chợ Phú Thọ';
     const canonical = document.querySelector('link[rel="canonical"]') || document.createElement('link');
-    canonical.rel = 'canonical';
-    canonical.href = location.href.split('#')[0];
+    canonical.rel = 'canonical'; canonical.href = location.href.split('#')[0];
     if (!canonical.parentNode) document.head.appendChild(canonical);
 
     const detailId = new URLSearchParams(location.search).get('id');
     if (path.endsWith('/chi-tiet.html') && detailId && typeof supabaseClient !== 'undefined') {
-      const { data: item } = await supabaseClient.from('listings').select('title,description,category,location,price').eq('id', Number(detailId)).maybeSingle();
+      const { data: item } = await supabaseClient.from('listings').select('title,description,category,location,price').eq('id', detailId).maybeSingle();
       if (item?.title) {
         document.title = `${item.title} | ${siteName}`;
         const meta = document.querySelector('meta[name="description"]') || document.head.appendChild(Object.assign(document.createElement('meta'), {name:'description'}));
@@ -71,36 +62,28 @@
   }
 
   async function performLogout() {
-    try {
-      await supabaseClient.auth.signOut();
-    } catch (error) {
-      console.warn('Logout error', error);
-    }
+    try { await supabaseClient.auth.signOut(); } catch (error) { console.warn('Logout error', error); }
     window.location.replace('index.html');
   }
 
   function bindLogoutButton() {
     const button = document.getElementById('logoutButton');
     if (!button || button.dataset.bound === '1') return;
-    button.dataset.bound = '1';
-    button.addEventListener('click', performLogout);
+    button.dataset.bound = '1'; button.addEventListener('click', performLogout);
   }
 
   async function refreshAccountAndLocation() {
     try {
       if (typeof supabaseClient === 'undefined') return;
-
       const area = document.getElementById('accountArea');
       const { data: authData } = await supabaseClient.auth.getUser();
       const user = authData?.user || null;
-
       if (area) {
         if (!user) {
           area.innerHTML = '<a href="dang-nhap.html">Đăng nhập</a><span class="account-separator">|</span><a href="dang-ky.html">Đăng ký</a>';
         } else {
-          let profile = null;
           const result = await supabaseClient.from('profiles').select('full_name, phone, role').eq('id', user.id).maybeSingle();
-          if (!result.error) profile = result.data || null;
+          const profile = result.error ? null : result.data;
           const metadataName = user.user_metadata?.full_name || user.user_metadata?.name || '';
           const name = escapeValue(profile?.full_name || metadataName || user.email?.split('@')[0] || 'Bạn');
           const role = profile?.role === 'admin' ? 'Quản trị viên' : profile?.role === 'seller' ? 'Nhà bán hàng' : 'Khách hàng';
@@ -108,27 +91,14 @@
           bindLogoutButton();
         }
       }
-
-      if (typeof window.setSelectedLocation === 'function') {
-        window.setSelectedLocation(localStorage.getItem('choPhuThoLocation') || '');
-      }
-    } catch (error) {
-      console.warn('Account/location refresh error', error);
-    }
+      if (typeof window.setSelectedLocation === 'function') window.setSelectedLocation(localStorage.getItem('choPhuThoLocation') || '');
+    } catch (error) { console.warn('Account/location refresh error', error); }
   }
 
   function watchAuthAndLocation() {
     if (typeof supabaseClient === 'undefined') return;
-    try {
-      supabaseClient.auth.onAuthStateChange(() => {
-        window.setTimeout(refreshAccountAndLocation, 100);
-      });
-    } catch (error) {
-      console.warn('Auth listener error', error);
-    }
-    window.addEventListener('storage', (event) => {
-      if (event.key === 'choPhuThoLocation') refreshAccountAndLocation();
-    });
+    try { supabaseClient.auth.onAuthStateChange(() => window.setTimeout(refreshAccountAndLocation, 100)); } catch (error) { console.warn('Auth listener error', error); }
+    window.addEventListener('storage', event => { if (event.key === 'choPhuThoLocation') refreshAccountAndLocation(); });
   }
 
   window.platformHideExpiredListings = hideExpiredListings;
