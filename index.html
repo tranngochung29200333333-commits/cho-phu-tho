@@ -31,7 +31,7 @@
         <div class="hero-copy">
             <span class="eyebrow">CHỢ ĐỊA PHƯƠNG PHÚ THỌ</span>
             <h1>Mua bán, tìm dịch vụ<br><span>ngay gần bạn</span></h1>
-            <p>Kết nối người cần và người cung cấp dịch vụ trong toàn khu vực Phú Thọ. Tìm kiếm theo danh mục và khu vực nhanh chóng.</p>
+            <p>Kết nối người cần và người cung cấp trong toàn khu vực Phú Thọ. Tìm theo danh mục, khu vực và khoảng cách.</p>
             <div class="hero-actions">
                 <a href="dang-tin.html" class="hero-button">Đăng tin miễn phí</a>
                 <a href="danh-muc.html" class="hero-button light">Khám phá danh mục</a>
@@ -59,14 +59,14 @@
             <a href="danh-muc.html" class="see-all">Xem tất cả →</a>
         </div>
         <div class="category-grid">
-            <a class="category-card" href="danh-muc.html?category=bat-dong-san">🏠<strong>Bất động sản</strong><small>Nhà, đất, phòng trọ</small></a>
-            <a class="category-card" href="danh-muc.html?category=xe-co">🚗<strong>Xe cộ</strong><small>Ô tô, xe máy, vận tải</small></a>
-            <a class="category-card" href="danh-muc.html?category=dien-tu">📱<strong>Điện tử</strong><small>Điện thoại, laptop, đồ dùng</small></a>
-            <a class="category-card" href="danh-muc.html?category=dich-vu">🛠️<strong>Dịch vụ</strong><small>Sửa chữa, vận chuyển</small></a>
-            <a class="category-card" href="danh-muc.html?category=viec-lam">💼<strong>Việc làm</strong><small>Tuyển dụng, tìm việc</small></a>
-            <a class="category-card" href="danh-muc.html?category=do-gia-dung">🛋️<strong>Đồ gia dụng</strong><small>Mua bán đồ dùng</small></a>
-            <a class="category-card" href="danh-muc.html?category=thoi-trang">👕<strong>Thời trang</strong><small>Quần áo, phụ kiện</small></a>
-            <a class="category-card" href="danh-muc.html?category=thu-cung">🐶<strong>Thú cưng</strong><small>Pet và phụ kiện</small></a>
+            <a class="category-card" href="danh-muc.html?category=Bất động sản">🏠<strong>Bất động sản</strong><small>Nhà, đất, phòng trọ</small></a>
+            <a class="category-card" href="danh-muc.html?category=Xe cộ">🚗<strong>Xe cộ</strong><small>Ô tô, xe máy, vận tải</small></a>
+            <a class="category-card" href="danh-muc.html?category=Điện tử">📱<strong>Điện tử</strong><small>Điện thoại, laptop, đồ dùng</small></a>
+            <a class="category-card" href="danh-muc.html?category=Dịch vụ">🛠️<strong>Dịch vụ</strong><small>Sửa chữa, vận chuyển</small></a>
+            <a class="category-card" href="danh-muc.html?category=Việc làm">💼<strong>Việc làm</strong><small>Tuyển dụng, tìm việc</small></a>
+            <a class="category-card" href="danh-muc.html?category=Đồ gia dụng">🛋️<strong>Đồ gia dụng</strong><small>Mua bán đồ dùng</small></a>
+            <a class="category-card" href="danh-muc.html?category=Thời trang">👕<strong>Thời trang</strong><small>Quần áo, phụ kiện</small></a>
+            <a class="category-card" href="danh-muc.html?category=Thú cưng">🐶<strong>Thú cưng</strong><small>Pet và phụ kiện</small></a>
         </div>
     </section>
 
@@ -82,29 +82,22 @@
     <section id="listings" class="section-block">
         <div class="section-heading">
             <div><span class="eyebrow">TIN MỚI</span><h2>Tin đăng quanh bạn</h2></div>
-            <span class="section-note">Ưu tiên khu vực Phú Thọ</span>
+            <label class="nearby-toggle"><input type="checkbox" id="nearbyOnly"> Chỉ trong bán kính 25 km</label>
         </div>
         <section class="filter-panel">
             <label>Danh mục
                 <select id="categoryFilter">
                     <option value="">Tất cả</option>
-                    <option value="Bất động sản">Bất động sản</option>
-                    <option value="Xe cộ">Xe cộ</option>
-                    <option value="Điện tử">Điện tử</option>
-                    <option value="Dịch vụ">Dịch vụ</option>
-                    <option value="Việc làm">Việc làm</option>
-                    <option value="Đồ gia dụng">Đồ gia dụng</option>
-                    <option value="Thời trang">Thời trang</option>
-                    <option value="Thú cưng">Thú cưng</option>
-                    <option value="Khác">Khác</option>
+                    <option>Bất động sản</option><option>Xe cộ</option><option>Điện tử</option><option>Dịch vụ</option>
+                    <option>Việc làm</option><option>Đồ gia dụng</option><option>Thời trang</option><option>Thú cưng</option><option>Khác</option>
                 </select>
             </label>
             <label>Khu vực
                 <select id="locationFilter">
                     <option value="">Tất cả khu vực Phú Thọ</option>
-                    <option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option>
-                    <option>Hạ Hòa</option><option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option>
-                    <option>Thanh Ba</option><option>Đoan Hùng</option><option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
+                    <option>Việt Trì</option><option>Phú Thọ</option><option>Lâm Thao</option><option>Cẩm Khê</option><option>Hạ Hòa</option>
+                    <option>Thanh Sơn</option><option>Tân Sơn</option><option>Yên Lập</option><option>Thanh Ba</option><option>Đoan Hùng</option>
+                    <option>Phù Ninh</option><option>Thanh Thủy</option><option>Tam Nông</option>
                 </select>
             </label>
             <label>Giá từ<input id="minPrice" type="number" min="0" placeholder="0"></label>
@@ -117,7 +110,7 @@
 <footer>
     <div class="container footer-inner">
         <div><strong>🛒 Chợ Phú Thọ</strong><span>Nền tảng rao vặt & dịch vụ địa phương</span></div>
-        <nav><a href="danh-muc.html">Danh mục</a><a href="dang-tin.html">Đăng tin</a><a href="admin-login.html">Quản trị</a></nav>
+        <nav><a href="danh-muc.html">Danh mục</a><a href="dang-tin.html">Đăng tin</a><a href="quan-ly-tin.html">Tin của tôi</a><a href="admin-login.html">Quản trị</a></nav>
     </div>
 </footer>
 
@@ -127,7 +120,7 @@
         <button type="button" class="modal-close" data-close-location>×</button>
         <div class="modal-icon">📍</div>
         <h2 id="locationTitle">Xác nhận vị trí của bạn</h2>
-        <p>Chợ Phú Thọ có thể dùng vị trí của bạn để ưu tiên hiển thị tin và dịch vụ gần khu vực bạn đang ở. Trình duyệt sẽ hỏi quyền truy cập vị trí.</p>
+        <p>Cho phép vị trí để ưu tiên tin và dịch vụ gần bạn. Nếu không muốn chia sẻ GPS, bạn có thể chọn khu vực thủ công.</p>
         <button type="button" class="primary-full" id="allowLocation">Cho phép vị trí</button>
         <button type="button" class="secondary-full" id="manualLocation">Chọn khu vực thủ công</button>
         <div class="manual-location-select" id="manualLocationBox" hidden>
@@ -144,5 +137,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/main.js"></script>
+<script src="js/marketplace.js"></script>
 </body>
 </html>
