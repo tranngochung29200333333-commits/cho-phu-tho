@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{document.querySelectorAll('a.detail-action[href*="chat.html"]').forEach(a=>{a.textContent='💬 Trao đổi online';});},0);});
