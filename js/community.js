@@ -5,11 +5,12 @@
     async function user() { const { data } = await supabaseClient.auth.getUser(); return data?.user || null; }
     function money(v){ const n=Number(v); return n>0?n.toLocaleString('vi-VN')+' đ':'Thỏa thuận'; }
     function stars(n){ return '★'.repeat(Number(n)||0)+'☆'.repeat(5-(Number(n)||0)); }
+    function injectCss(){ if($('#community-css'))return; const l=document.createElement('link'); l.id='community-css'; l.rel='stylesheet'; l.href='css/community.css'; document.head.appendChild(l); }
 
     async function loadFavoritesPage(){
         const box = $('#favoritesList'); if(!box) return;
         const me = await user(); if(!me){ box.innerHTML='<div class="empty-state"><h3>Đăng nhập để xem tin yêu thích</h3><a class="btn-post" href="dang-nhap.html">Đăng nhập</a></div>'; return; }
-        const { data: favs, error } = await supabaseClient.from('favorites').select('listing_id').eq('user_id',me.id).order('created_at',{ascending:false});
+        const { data: favs, error } = await supabaseClient.from('favorites').select('listing_id,created_at').eq('user_id',me.id).order('created_at',{ascending:false});
         if(error){ box.innerHTML='<div class="empty-state">Không tải được tin yêu thích.</div>'; return; }
         const ids=(favs||[]).map(x=>x.listing_id); if(!ids.length){box.innerHTML='<div class="empty-state"><div class="empty-icon">♡</div><h3>Bạn chưa lưu tin nào</h3><p>Nhấn ♡ trên tin đăng để lưu lại.</p></div>';return;}
         const { data:listings }=await supabaseClient.from('listings').select('*').in('id',ids).eq('status','approved');
@@ -18,7 +19,7 @@
 
     async function addCommentsAndReviews(){
         const root=$('#productDetail'); if(!root) return;
-        const wait=()=>{ if(!$('.detail-box',root)){setTimeout(wait,300);return;} if($('#communityPanel',root))return; buildCommunity(root); };
+        const wait=()=>{ if(!$('.detail-box',root)){setTimeout(wait,250);return;} if($('#communityPanel',root))return; buildCommunity(root); };
         wait();
     }
 
@@ -30,9 +31,10 @@
         root.appendChild(panel);
         await loadComments(id); await loadReviews(item.seller_id);
         $('#commentForm',panel).addEventListener('submit',submitComment); $('#reviewForm',panel).addEventListener('submit',e=>submitReview(e,item.seller_id,id));
+        const sellerBox=$('.seller-box',root); if(sellerBox && item.seller_id && !$('.chat-seller-button',sellerBox)){ const a=document.createElement('a'); a.className='outline-button detail-action chat-seller-button'; a.href=`chat.html?user=${encodeURIComponent(item.seller_id)}&listing=${encodeURIComponent(id)}`; a.textContent='💬 Chat với người bán'; sellerBox.appendChild(a); }
     }
 
-    async function loadComments(id){ const box=$('#commentsList'); const {data,error}=await supabaseClient.from('listing_comments').select('id,body,created_at,user_id').eq('listing_id',id).order('created_at',{ascending:true}); if(error){box.innerHTML='<div class="muted">Không tải được bình luận.</div>';return;} if(!data?.length){box.innerHTML='<div class="muted">Chưa có bình luận.</div>';return;} box.innerHTML=data.map(c=>`<div class="comment-item"><strong>${esc(c.user_id?.slice(0,8)||'Người dùng')}</strong><small>${new Date(c.created_at).toLocaleString('vi-VN')}</small><p>${esc(c.body)}</p></div>`).join(''); }
+    async function loadComments(id){ const box=$('#commentsList'); const {data,error}=await supabaseClient.from('listing_comments').select('id,body,created_at,user_id').eq('listing_id',id).order('created_at',{ascending:true}); if(error){box.innerHTML='<div class="muted">Không tải được bình luận.</div>';return;} if(!data?.length){box.innerHTML='<div class="muted">Chưa có bình luận.</div>';return;} box.innerHTML=data.map(c=>`<div class="comment-item"><strong>Người dùng ${esc(c.user_id?.slice(0,8)||'')}</strong><small>${new Date(c.created_at).toLocaleString('vi-VN')}</small><p>${esc(c.body)}</p></div>`).join(''); }
     async function submitComment(e){e.preventDefault();const me=await user();if(!me){location.href='dang-nhap.html';return;}const id=new URLSearchParams(location.search).get('id');const body=$('#commentBody').value.trim();if(!body)return;const {error}=await supabaseClient.from('listing_comments').insert({listing_id:id,user_id:me.id,body});if(error){alert('Không thể gửi bình luận: '+error.message);return;}$('#commentBody').value='';loadComments(id);}
     async function loadReviews(sellerId){
         const summary=$('#reviewSummary'),list=$('#reviewList'); if(!sellerId){summary.textContent='Chưa có người bán.';return;}
@@ -51,7 +53,7 @@
         const all=msgs||[];let otherId=other;
         if(!otherId&&listing){const m=all.find(x=>String(x.listing_id)===String(listing));otherId=m?(m.sender_id===me.id?m.receiver_id:m.sender_id):null;}
         const people=[...new Set(all.map(m=>m.sender_id===me.id?m.receiver_id:m.sender_id))];
-        const listBox=document.createElement('div');listBox.className='chat-sidebar';listBox.innerHTML=`<h3>Tin nhắn</h3>`+(people.map(p=>`<a href="chat.html?user=${encodeURIComponent(p)}${listing?'&listing='+encodeURIComponent(listing):''}" class="chat-person ${p===otherId?'active':''}">👤 ${esc(p.slice(0,8))}</a>`).join('')||'<p class="muted">Chưa có cuộc trò chuyện.</p>');
+        const listBox=document.createElement('div');listBox.className='chat-sidebar';listBox.innerHTML=`<h3>Tin nhắn</h3>`+(people.map(p=>`<a href="chat.html?user=${encodeURIComponent(p)}" class="chat-person ${p===otherId?'active':''}">👤 ${esc(p.slice(0,8))}</a>`).join('')||'<p class="muted">Chưa có cuộc trò chuyện.</p>');
         const content=document.createElement('div');content.className='chat-content';
         if(otherId){const rows=all.filter(m=>m.sender_id===otherId||m.receiver_id===otherId);content.innerHTML=`<div class="chat-messages">${rows.map(m=>`<div class="chat-bubble ${m.sender_id===me.id?'mine':''}">${esc(m.body)}<small>${new Date(m.created_at).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})}</small></div>`).join('')}</div><form id="chatForm" class="chat-compose"><input id="chatBody" maxlength="1000" placeholder="Nhập tin nhắn..."><button class="btn-post">Gửi</button></form>`;
             content.querySelector('#chatForm').addEventListener('submit',async e=>{e.preventDefault();const body=$('#chatBody',content).value.trim();if(!body)return;const {error}=await supabaseClient.from('messages').insert({sender_id:me.id,receiver_id:otherId,listing_id:listing?Number(listing):null,body});if(error){alert('Không thể gửi tin nhắn: '+error.message);return;}location.reload();});
@@ -59,6 +61,7 @@
         box.innerHTML='';box.appendChild(listBox);box.appendChild(content);
     }
 
-    async function decorateAccount(){const a=$('#accountArea');if(!a)return;const me=await user();if(!me)return;const links=document.createElement('div');links.className='account-shortcuts';links.innerHTML='<a href="yeu-thich.html">♡ Yêu thích</a><a href="chat.html">💬 Tin nhắn</a><a href="thong-bao.html">🔔 Thông báo</a>';a.appendChild(links);}
-    document.addEventListener('DOMContentLoaded',()=>{ if(typeof supabaseClient==='undefined')return; decorateAccount();loadFavoritesPage();loadNotifications();loadChat();if($('#productDetail')) addCommentsAndReviews(); });
+    async function decorateAccount(){const a=$('#accountArea');if(!a)return;const me=await user();if(!me)return;if($('.account-shortcuts',a))return;const links=document.createElement('div');links.className='account-shortcuts';links.innerHTML='<a href="yeu-thich.html">♡ Yêu thích</a><a href="chat.html">💬 Tin nhắn</a><a href="thong-bao.html">🔔 Thông báo</a>';a.appendChild(links);}
+    async function start(){ if(typeof supabaseClient==='undefined')return; injectCss(); decorateAccount(); loadFavoritesPage(); loadNotifications(); loadChat(); if($('#productDetail')) addCommentsAndReviews(); }
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',start,{once:true}); else start();
 })();
