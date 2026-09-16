@@ -2,6 +2,7 @@
 (function () {
   const SETTINGS_KEYS = ['site_name','site_tagline','support_phone','support_email','support_zalo','support_address','facebook_url','youtube_url','linkedin_url','analytics_id','currency','listing_default_days'];
   const escapeValue = (v) => typeof escapeHtml === 'function' ? escapeHtml(v) : String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+  let messageChannel = null;
 
   async function loadSiteSettings() {
     if (typeof supabaseClient === 'undefined') return {};
@@ -72,6 +73,60 @@
     button.dataset.bound = '1'; button.addEventListener('click', performLogout);
   }
 
+  function showMessageToast(senderName, body, url) {
+    let toast = document.getElementById('messageToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'messageToast';
+      toast.innerHTML = '<div class="message-toast-icon">💬</div><div class="message-toast-copy"><strong>Tin nhắn mới</strong><span></span></div><a class="message-toast-link" href="#">Xem</a><button type="button" class="message-toast-close" aria-label="Đóng">×</button>';
+      document.body.appendChild(toast);
+      const close = toast.querySelector('.message-toast-close');
+      close.onclick = () => toast.classList.remove('show');
+    }
+    toast.querySelector('.message-toast-copy span').textContent = `${senderName || 'Người dùng'}: ${String(body || '').slice(0, 90)}`;
+    toast.querySelector('.message-toast-link').href = url || 'chat.html';
+    toast.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('show'), 7000);
+  }
+
+  function ensureMessageToastStyles() {
+    if (document.getElementById('message-toast-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'message-toast-styles';
+    style.textContent = `
+      #messageToast{position:fixed;right:20px;bottom:20px;z-index:99999;width:min(390px,calc(100vw - 28px));display:flex;align-items:center;gap:12px;padding:14px 15px;background:#fff;border:1px solid #e7e7e7;border-radius:16px;box-shadow:0 16px 45px rgba(0,0,0,.16);transform:translateY(20px);opacity:0;pointer-events:none;transition:.22s ease}
+      #messageToast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+      .message-toast-icon{width:42px;height:42px;display:grid;place-items:center;background:#fff4c8;border-radius:12px;font-size:20px;flex:0 0 42px}
+      .message-toast-copy{min-width:0;display:flex;flex-direction:column;gap:3px;flex:1}.message-toast-copy strong{font-size:14px}.message-toast-copy span{font-size:13px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.message-toast-link{font-weight:800;color:#171717;text-decoration:none;background:#ffbf00;padding:9px 12px;border-radius:10px;white-space:nowrap}.message-toast-close{border:0;background:transparent;font-size:22px;color:#888;cursor:pointer;padding:2px}
+      @media(max-width:600px){#messageToast{right:12px;bottom:76px}.message-toast-link{padding:8px 10px}}
+    `;
+    document.head.appendChild(style);
+  }
+
+  async function watchIncomingMessages(user) {
+    if (!user || typeof supabaseClient === 'undefined') return;
+    if (messageChannel) { try { await supabaseClient.removeChannel(messageChannel); } catch (_) {} }
+    ensureMessageToastStyles();
+    messageChannel = supabaseClient.channel(`platform-messages-${user.id}`)
+      .on('postgres_changes', {event:'INSERT', schema:'public', table:'messages', filter:`receiver_id=eq.${user.id}`}, async payload => {
+        const m = payload.new;
+        if (!m || m.sender_id === user.id) return;
+        let senderName = 'Người dùng';
+        try {
+          const {data:p} = await supabaseClient.from('profiles').select('full_name,shop_name').eq('id',m.sender_id).maybeSingle();
+          senderName = p?.shop_name || p?.full_name || senderName;
+        } catch (_) {}
+        const url = `chat.html?user=${encodeURIComponent(m.sender_id)}${m.listing_id ? `&listing=${encodeURIComponent(m.listing_id)}` : ''}`;
+        showMessageToast(senderName, m.body, url);
+        if ('Notification' in window && document.hidden && Notification.permission === 'granted') {
+          try { new Notification('Tin nhắn mới - Chợ Phú Thọ', {body:`${senderName}: ${String(m.body || '').slice(0,100)}`}); } catch (_) {}
+        }
+        window.dispatchEvent(new CustomEvent('choPhuTho:new-message', {detail:m}));
+      })
+      .subscribe();
+  }
+
   async function refreshAccountAndLocation() {
     try {
       if (typeof supabaseClient === 'undefined') return;
@@ -91,6 +146,7 @@
           bindLogoutButton();
         }
       }
+      await watchIncomingMessages(user);
       if (typeof window.setSelectedLocation === 'function') window.setSelectedLocation(localStorage.getItem('choPhuThoLocation') || '');
     } catch (error) { console.warn('Account/location refresh error', error); }
   }
