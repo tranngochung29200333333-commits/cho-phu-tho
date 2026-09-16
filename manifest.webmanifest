@@ -1,0 +1,11 @@
+{
+  "name": "Chợ Phú Thọ",
+  "short_name": "Chợ Phú Thọ",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f7f5",
+  "theme_color": "#ffba00",
+  "lang": "vi",
+  "description": "Mua bán, rao vặt và dịch vụ địa phương tại Phú Thọ",
+  "icons": []
+}
