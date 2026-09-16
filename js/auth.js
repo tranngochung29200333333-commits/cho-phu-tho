@@ -1,116 +1,90 @@
-// ========================================
-// ĐĂNG KÝ TÀI KHOẢN - SUPABASE AUTH
-// ========================================
+const VERIFY_BUCKET = "seller-kyc";
 
-async function registerUser() {
-
-    const fullname = document.getElementById("fullname").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const accountType = document.getElementById("accountType").value;
-
-    // Kiểm tra dữ liệu
-    if (!fullname || !phone || !email || !password) {
-        alert("Vui lòng nhập đầy đủ thông tin.");
-        return;
-    }
-
-    if (password.length < 6) {
-        alert("Mật khẩu phải có ít nhất 6 ký tự.");
-        return;
-    }
-
+function setAuthStatus(message, type = "error") {
+    const box = document.getElementById("authStatus");
+    if (box) { box.className = `auth-status ${type}`; box.textContent = message; }
+    else alert(message);
+}
+function setBusy(form, busy) {
+    const button = form?.querySelector("button[type=submit]");
+    if (!button) return;
+    if (!button.dataset.defaultText) button.dataset.defaultText = button.textContent;
+    button.disabled = busy;
+    button.textContent = busy ? "Đang xử lý..." : button.dataset.defaultText;
+}
+async function createCustomerProfile(userId, fullName, phone) {
+    return (await supabaseClient.from("profiles").insert({ id: userId, full_name: fullName, phone, role: "customer" })).error;
+}
+async function registerCustomer(event) {
+    event.preventDefault();
+    const form = event.target;
+    const fullName = form.fullName.value.trim(), phone = form.phone.value.trim(), email = form.email.value.trim();
+    const password = form.password.value, confirmPassword = form.confirmPassword.value;
+    if (!fullName || !phone || !email) return setAuthStatus("Vui lòng nhập đầy đủ thông tin.");
+    if (password.length < 6) return setAuthStatus("Mật khẩu cần ít nhất 6 ký tự.");
+    if (password !== confirmPassword) return setAuthStatus("Mật khẩu nhập lại không khớp.");
+    setBusy(form, true);
+    const { data, error } = await supabaseClient.auth.signUp({ email, password, options: { data: { full_name: fullName, phone, account_type: "customer" } } });
+    if (error || !data.user) { setBusy(form, false); return setAuthStatus(error?.message || "Không tạo được tài khoản."); }
+    const profileError = await createCustomerProfile(data.user.id, fullName, phone);
+    if (profileError) { setBusy(form, false); return setAuthStatus(profileError.message); }
+    setBusy(form, false);
+    setAuthStatus(data.session ? "Đăng ký thành công. Đang chuyển trang..." : "Đăng ký thành công. Hãy xác nhận email rồi đăng nhập.", "success");
+    setTimeout(() => window.location.href = data.session ? "index.html" : "dang-nhap.html", 900);
+}
+function fileExt(name) { return (String(name || "jpg").split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg"; }
+async function registerSeller(event) {
+    event.preventDefault();
+    const form = event.target;
+    const fullName = form.fullName.value.trim(), phone = form.phone.value.trim(), email = form.email.value.trim();
+    const password = form.password.value, confirmPassword = form.confirmPassword.value;
+    const documentNumber = form.documentNumber.value.trim();
+    const front = form.documentFront.files?.[0], back = form.documentBack.files?.[0];
+    if (!fullName || !phone || !email || !documentNumber) return setAuthStatus("Vui lòng nhập đầy đủ thông tin.");
+    if (!/^\d{9,12}$/.test(documentNumber)) return setAuthStatus("Số giấy tờ không hợp lệ.");
+    if (!front || !back) return setAuthStatus("Vui lòng tải đủ 2 mặt giấy tờ.");
+    if (![front, back].every(f => f.type.startsWith("image/") && f.size <= 8 * 1024 * 1024)) return setAuthStatus("Mỗi ảnh phải là ảnh và tối đa 8MB.");
+    if (password.length < 6) return setAuthStatus("Mật khẩu cần ít nhất 6 ký tự.");
+    if (password !== confirmPassword) return setAuthStatus("Mật khẩu nhập lại không khớp.");
+    setBusy(form, true);
+    const { data, error } = await supabaseClient.auth.signUp({ email, password, options: { data: { full_name: fullName, phone, account_type: "seller" } } });
+    if (error || !data.user) { setBusy(form, false); return setAuthStatus(error?.message || "Không tạo được tài khoản."); }
+    const userId = data.user.id;
+    const profileError = await createCustomerProfile(userId, fullName, phone);
+    if (profileError) { setBusy(form, false); return setAuthStatus(profileError.message); }
+    if (!data.session) { setBusy(form, false); return setAuthStatus("Tài khoản đã tạo nhưng cần xác nhận email. Hãy xác nhận email rồi đăng nhập để hoàn tất hồ sơ.", "success"); }
     try {
-
-        // Đăng ký tài khoản Supabase
-        const { data, error } = await supabaseClient.auth.signUp({
-            email: email,
-            password: password,
-
-            options: {
-                data: {
-                    full_name: fullname,
-                    phone: phone,
-                    role: accountType
-                }
-            }
-        });
-
-        if (error) {
-            throw error;
-        }
-
-        // Supabase đã tạo tài khoản
-        if (data.user) {
-
-            // Trường hợp yêu cầu xác nhận email
-            if (!data.session) {
-
-                alert(
-                    "Đăng ký thành công!\n\n" +
-                    "Một email xác nhận đã được gửi tới:\n" +
-                    email +
-                    "\n\n" +
-                    "Hãy mở email và bấm vào liên kết xác nhận."
-                );
-
-                window.location.href = "dang-nhap.html";
-
-                return;
-            }
-
-            // Trường hợp đăng nhập ngay
-            alert("Đăng ký thành công!");
-
-            window.location.href = "index.html";
-        }
-
-    } catch (error) {
-
-        console.error("Lỗi đăng ký:", error);
-
-        alert("Đăng ký thất bại: " + error.message);
+        const stamp = Date.now();
+        const frontPath = `${userId}/front-${stamp}.${fileExt(front.name)}`;
+        const backPath = `${userId}/back-${stamp}.${fileExt(back.name)}`;
+        const a = await supabaseClient.storage.from(VERIFY_BUCKET).upload(frontPath, front, { upsert: false, contentType: front.type });
+        if (a.error) throw a.error;
+        const b = await supabaseClient.storage.from(VERIFY_BUCKET).upload(backPath, back, { upsert: false, contentType: back.type });
+        if (b.error) throw b.error;
+        const result = await supabaseClient.from("seller_applications").insert({ user_id: userId, full_name: fullName, phone, cccd_number: documentNumber, cccd_front_path: frontPath, cccd_back_path: backPath, status: "pending" });
+        if (result.error) throw result.error;
+        await supabaseClient.auth.signOut();
+        setBusy(form, false);
+        setAuthStatus("Hồ sơ nhà bán hàng đã gửi. Admin sẽ kiểm tra và cấp quyền sau khi duyệt.", "success");
+        setTimeout(() => window.location.href = "dang-nhap.html", 1200);
+    } catch (e) {
+        console.error(e);
+        setBusy(form, false);
+        setAuthStatus("Tài khoản đã tạo nhưng hồ sơ xác minh chưa hoàn tất. Vui lòng liên hệ Admin để xử lý.");
     }
 }
-// ========================================
-// ĐĂNG NHẬP TÀI KHOẢN - SUPABASE AUTH
-// ========================================
-
-async function loginUser() {
-
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
-
-    if (!email || !password) {
-        alert("Vui lòng nhập email và mật khẩu.");
-        return;
-    }
-
-    try {
-
-        const { data, error } =
-            await supabaseClient.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
-
-        if (error) {
-            throw error;
-        }
-
-        if (!data.user) {
-            throw new Error("Không tìm thấy tài khoản.");
-        }
-
-        alert("Đăng nhập thành công!");
-
-        window.location.href = "index.html";
-
-    } catch (error) {
-
-        console.error("Lỗi đăng nhập:", error);
-
-        alert("Đăng nhập thất bại: " + error.message);
-    }
+async function loginUser(event) {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value.trim(), password = form.password.value;
+    setBusy(form, true);
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error || !data.user) { setBusy(form, false); return setAuthStatus(error?.message || "Đăng nhập thất bại."); }
+    const { data: profile } = await supabaseClient.from("profiles").select("full_name, phone, role").eq("id", data.user.id).maybeSingle();
+    const { data: application } = await supabaseClient.from("seller_applications").select("status").eq("user_id", data.user.id).maybeSingle();
+    if (application?.status === "pending") { await supabaseClient.auth.signOut(); setBusy(form, false); return setAuthStatus("Hồ sơ nhà bán hàng đang chờ Admin duyệt. Tài khoản bán hàng chưa được phép đăng nhập."); }
+    if (application?.status === "rejected" && profile?.role !== "admin") { await supabaseClient.auth.signOut(); setBusy(form, false); return setAuthStatus("Hồ sơ nhà bán hàng chưa được duyệt. Vui lòng liên hệ Admin."); }
+    setBusy(form, false);
+    window.location.href = profile?.role === "admin" ? "admin.html" : "index.html";
 }
+window.logoutUser = async function () { await supabaseClient.auth.signOut(); window.location.href = "index.html"; };
