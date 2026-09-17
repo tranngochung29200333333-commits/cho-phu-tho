@@ -1,21 +1,32 @@
 (function(){
   const esc=v=>typeof escapeHtml==='function'?escapeHtml(v):String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
   const fmt=v=>v?new Date(v).toLocaleString('vi-VN'):'';
+  function applyRoleUI(role){
+    const customer=role!=='seller'&&role!=='admin';
+    document.body.classList.toggle('customer-account',customer);
+    if(!customer)return;
+    document.querySelectorAll('a[href="dang-tin.html"],a[href="quan-ly-tin.html"],a[href="goi-dich-vu.html"]').forEach(el=>{el.classList.add('customer-hide-posting');el.setAttribute('aria-hidden','true');});
+    document.querySelectorAll('.mobile-nav-post').forEach(el=>{el.classList.add('customer-hide-posting');el.setAttribute('aria-hidden','true');});
+    document.querySelectorAll('.account-dashboard-grid a[href="quan-ly-tin.html"],.account-dashboard-grid a[href="goi-dich-vu.html"]').forEach(el=>el.classList.add('customer-hide-posting'));
+  }
   document.addEventListener('DOMContentLoaded',async()=>{
     if(typeof supabaseClient==='undefined')return;
     const box=document.getElementById('accountCenter');if(!box)return;
     const {data,error}=await supabaseClient.auth.getUser();
     if(error||!data?.user){
-      box.innerHTML='<div class="seller-profile-head"><div class="seller-avatar">👤</div><div><span class="eyebrow">TÀI KHOẢN</span><h2>Đăng nhập hoặc đăng ký</h2><p class="muted">Quản lý tin đăng, tin yêu thích, tin nhắn và tài khoản nhà bán hàng.</p><div style="margin-top:12px"><a class="detail-action primary" href="dang-nhap.html?next=tai-khoan.html">🔐 Đăng nhập</a><a class="detail-action" href="dang-ky.html">📝 Đăng ký</a><a class="detail-action" href="dang-ky-nha-ban-hang.html">🏪 Đăng ký nhà bán hàng</a></div></div></div>';return;
+      applyRoleUI('customer');
+      box.innerHTML='<div class="seller-profile-head"><div class="seller-avatar">👤</div><div><span class="eyebrow">TÀI KHOẢN</span><h2>Đăng nhập hoặc đăng ký</h2><p class="muted">Khám phá tin đăng, lưu tin yêu thích và trao đổi với người bán.</p><div style="margin-top:12px"><a class="detail-action primary" href="dang-nhap.html?next=tai-khoan.html">🔐 Đăng nhập</a><a class="detail-action" href="dang-ky.html">📝 Đăng ký</a><a class="detail-action" href="dang-ky-nha-ban-hang.html">🏪 Trở thành nhà bán hàng</a></div></div></div>';return;
     }
     const u=data.user;const {data:p,error:pErr}=await supabaseClient.from('profiles').select('full_name,phone,role,shop_name,shop_description,verified_at,created_at,avatar_url').eq('id',u.id).maybeSingle();
+    const roleKey=p?.role||'customer';
+    applyRoleUI(roleKey);
     const name=p?.shop_name||p?.full_name||u.user_metadata?.full_name||u.email?.split('@')[0]||'Bạn';
     const role=p?.role==='admin'?'QUẢN TRỊ VIÊN':p?.role==='seller'?'NHÀ BÁN HÀNG':'KHÁCH HÀNG';
     const avatar=p?.avatar_url?`<img src="${esc(p.avatar_url)}" alt="Ảnh đại diện">`:'👤';
     box.innerHTML=`<div class="seller-profile-head"><div class="seller-avatar">${avatar}</div><div><span class="eyebrow">${role}</span><h2>${esc(name)}</h2><p>${esc(u.email||'')}</p><p>☎ ${esc(p?.phone||'Chưa cập nhật')}</p>${p?.verified_at?'<div class="seller-trust">✅ Đã xác minh nhà bán hàng</div>':''}<div style="display:flex;gap:6px;flex-wrap:wrap"><button id="editProfile" class="outline-button detail-action" type="button">✏️ Hồ sơ cửa hàng</button><button id="logoutAccount" class="outline-button detail-action" type="button">Đăng xuất</button></div></div></div>`;
     document.getElementById('logoutAccount').onclick=async()=>{await supabaseClient.auth.signOut();location.href='index.html'};
     document.getElementById('editProfile').onclick=()=>openEditor(u,p);
-    if(p?.role==='seller')addSellerEditorHint(p);
+    if(p?.role==='seller')addSellerEditorHint(p);else document.getElementById('editProfile').style.display='none';
     const nbox=document.getElementById('notifications');if(!nbox)return;
     await renderNotifications(u.id,nbox);
     const channel=supabaseClient.channel('account-notifications-'+u.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:'user_id=eq.'+u.id},payload=>{renderNotifications(u.id,nbox);});channel.subscribe();
