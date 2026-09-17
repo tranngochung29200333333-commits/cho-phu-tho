@@ -35,7 +35,7 @@
     const mobile=document.createElement('link');
     mobile.id='mobile-home-fix-css';
     mobile.rel='stylesheet';
-    mobile.href='css/mobile-home-fix.css?v=20260917-1';
+    mobile.href='css/mobile-home-fix.css?v=20260917-3';
     document.head.appendChild(mobile);
   }
   document.addEventListener('DOMContentLoaded',()=>{initUrlFilters();const sort=document.getElementById('sortFilter');if(sort)sort.addEventListener('change',()=>{const list=[...(window.homeListings||[])];const mode=sort.value;if(mode==='price_asc')list.sort((a,b)=>Number(a.price||0)-Number(b.price||0));else if(mode==='price_desc')list.sort((a,b)=>Number(b.price||0)-Number(a.price||0));else if(mode==='views')list.sort((a,b)=>Number(b.view_count||0)-Number(a.view_count||0));else list.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));window.renderMarketplaceListings?.(list);});refreshFavoriteButtons();installDesktopMessageLink();installMobileNav();installMobileMenu();loadHomepageRedesign();});
