@@ -3,5 +3,15 @@ Allow: /
 Disallow: /admin.html
 Disallow: /admin-login.html
 Disallow: /admin-settings.html
+Disallow: /admin-tin.html
 Disallow: /supabase/
+Disallow: /ban-hang.html
+Disallow: /quan-ly-khach.html
+Disallow: /danh-gia.html
+Disallow: /quan-ly-tin.html
+Disallow: /sua-tin.html
+Disallow: /sua-tin-moi.html
+Disallow: /dang-tin.html
+Disallow: /dang-ky-nha-ban-hang.html
+Disallow: /tai-khoan.html
 Sitemap: https://tranngochung29200333333-commits.github.io/cho-phu-tho/sitemap.xml
