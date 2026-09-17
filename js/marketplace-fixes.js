@@ -25,3 +25,23 @@
   document.addEventListener('DOMContentLoaded',()=>{initUrlFilters();const sort=document.getElementById('sortFilter');if(sort)sort.addEventListener('change',()=>{const list=[...(window.homeListings||[])];const mode=sort.value;if(mode==='price_asc')list.sort((a,b)=>Number(a.price||0)-Number(b.price||0));else if(mode==='price_desc')list.sort((a,b)=>Number(b.price||0)-Number(a.price||0));else if(mode==='views')list.sort((a,b)=>Number(b.view_count||0)-Number(a.view_count||0));else list.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));window.renderMarketplaceListings?.(list);});refreshFavoriteButtons();installDesktopMessageLink();installMobileNav();installMobileMenu();loadHomepageRedesign();setTimeout(installMobileHomePolish,120);});
   window.marketplaceFormatPrice=formatPrice;
 })();
+
+// Đồng bộ danh mục đầy đủ để mọi thẻ danh mục trên trang Danh mục lọc đúng trên trang chủ.
+(function(){
+  const TAXONOMY=[
+    'Bất động sản','Xe cộ','Điện tử','Việc làm','Thú cưng','Điện lạnh','Đồ gia dụng','Mẹ và bé','Thời trang','Giải trí','Văn phòng','Đồ chuyên dụng','Dịch vụ','Khác'
+  ];
+  function sync(){
+    const select=document.getElementById('categoryFilter');
+    if(!select)return;
+    const existing=new Set([...select.options].map(o=>o.value||o.textContent));
+    TAXONOMY.forEach(name=>{if(!existing.has(name)){const o=document.createElement('option');o.value=name;o.textContent=name;select.appendChild(o);}});
+    const cat=new URLSearchParams(location.search).get('category');
+    if(cat&&TAXONOMY.includes(cat))select.value=cat;
+  }
+  document.addEventListener('DOMContentLoaded',()=>{
+    sync();
+    const cat=new URLSearchParams(location.search).get('category');
+    if(cat){setTimeout(()=>{sync();const select=document.getElementById('categoryFilter');if(select&&TAXONOMY.includes(cat)){select.value=cat;window.applyHomeFilters?.();}},450);}
+  });
+})();
