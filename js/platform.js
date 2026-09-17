@@ -5,12 +5,17 @@
     link.id='mobile-app-exact-css';link.rel='stylesheet';link.href='css/mobile-app-exact.css?v=20260917-1';
     document.head.appendChild(link);
   }
+  if(!document.getElementById('mobile-reference-v2-css')){
+    const link=document.createElement('link');
+    link.id='mobile-reference-v2-css';link.rel='stylesheet';link.href='css/mobile-reference-v2.css?v=20260917-2';
+    document.head.appendChild(link);
+  }
 })();
 
 // Chợ Phú Thọ - lớp nền tảng dùng chung
 (function () {
   const SETTINGS_KEYS = ['site_name','site_tagline','support_phone','support_email','support_zalo','support_address','facebook_url','youtube_url','linkedin_url','analytics_id','currency','listing_default_days'];
-  const escapeValue = (v) => typeof escapeHtml === 'function' ? escapeHtml(v) : String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));
+  const escapeValue = (v) => typeof escapeHtml === 'function' ? escapeHtml(v) : String(v ?? '').replace(/[&<>'\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','\"':'&quot;'}[c]));
   let messageChannel = null;
 
   async function loadSiteSettings() {
