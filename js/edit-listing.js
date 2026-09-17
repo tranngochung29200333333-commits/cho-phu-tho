@@ -39,3 +39,32 @@
   window.saveEditedProduct=save;
   document.addEventListener('DOMContentLoaded',load);
 })();
+
+(function(){
+  const TAXONOMY={
+    'Bất động sản':['Căn hộ/Chung cư','Nhà ở','Đất','Văn phòng, Mặt bằng kinh doanh','Phòng trọ'],
+    'Xe cộ':['Ô tô','Xe máy','Xe tải, Xe ben','Xe đạp','Phương tiện khác','Phụ tùng xe'],
+    'Điện tử':['Điện thoại','Máy tính bảng','Laptop','Máy tính để bàn','Máy ảnh, Máy quay','Tivi, Âm thanh','Phụ kiện','Linh kiện','Thiết bị đeo thông minh'],
+    'Việc làm':['Tuyển dụng'],
+    'Thú cưng':['Gà','Chó','Chim','Mèo','Thú cưng khác','Phụ kiện, Thức ăn, Dịch vụ'],
+    'Điện lạnh':['Tủ lạnh','Máy lạnh, điều hoà','Máy giặt'],
+    'Đồ gia dụng':['Bếp, lò, đồ điện nhà bếp','Dụng cụ nhà bếp','Giường, chăn ga gối nệm','Thiết bị vệ sinh, nhà tắm','Quạt','Đèn','Bàn ghế','Tủ, kệ gia đình','Cây cảnh, đồ trang trí','Nội thất, đồ gia dụng khác'],
+    'Mẹ và bé':['Mẹ và bé'],
+    'Thời trang':['Quần áo','Đồng hồ','Giày dép','Túi xách','Nước hoa','Phụ kiện thời trang khác'],
+    'Giải trí':['Nhạc cụ','Sách','Đồ thể thao, Dã ngoại','Đồ sưu tầm, đồ cổ','Thiết bị chơi game','Sở thích khác'],
+    'Văn phòng':['Đồ dùng văn phòng'],
+    'Đồ chuyên dụng':['Đồ chuyên dụng, Giống nuôi trồng'],
+    'Dịch vụ':['Dịch vụ','Du lịch','Dịch vụ dọn dẹp nhà','Dịch vụ chuyển nhà','Dịch vụ sửa chữa & bảo dưỡng điện máy','Dịch vụ nhà cửa khác'],
+    'Khác':['Các loại khác']
+  };
+  function sync(){
+    const cat=document.getElementById('editNetwork'),sub=document.getElementById('editSubcategory');
+    if(!cat||!sub)return;
+    const current=cat.value,oldSub=sub.value;
+    cat.innerHTML=Object.keys(TAXONOMY).map(x=>`<option value="${x}">${x}</option>`).join('');
+    if(current&&TAXONOMY[current])cat.value=current;
+    const fill=()=>{const values=TAXONOMY[cat.value]||[];sub.innerHTML='<option value="">-- Không chọn --</option>'+values.map(x=>`<option value="${x}">${x}</option>`).join('');if(oldSub&&values.includes(oldSub))sub.value=oldSub;};
+    fill();cat.onchange=fill;
+  }
+  document.addEventListener('DOMContentLoaded',sync);
+})();
