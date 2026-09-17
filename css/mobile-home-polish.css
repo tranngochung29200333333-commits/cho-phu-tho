@@ -1,0 +1,52 @@
+/* CHỢ PHÚ THỌ — MOBILE HOME POLISH */
+@media (max-width:760px){
+  .home-body .home-page{display:flex!important;flex-direction:column!important}
+  .home-body .hero-board{order:1!important}
+  .home-body .home-page>.section-block:not(#listings){order:2!important}
+  .home-body #listings{order:3!important}
+  .home-body .home-page>.service-banner{order:4!important}
+  .home-body .home-page>.service-banner[style]{order:5!important}
+
+  /* Header: heart + notification */
+  .home-body .mobile-header-icon:last-child{font-size:0!important;position:relative!important}
+  .home-body .mobile-header-icon:last-child:after{content:'🔔';font-size:21px!important;line-height:1!important}
+
+  /* Category row exactly as a small horizontal app strip */
+  .home-body .category-grid{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:12px!important;padding:2px 1px 9px!important;scrollbar-width:none!important}
+  .home-body .category-grid::-webkit-scrollbar{display:none!important}
+  .home-body .category-card{position:relative!important;flex:0 0 72px!important;width:72px!important;min-width:72px!important;height:100px!important;min-height:100px!important;padding:0!important;gap:7px!important;border:0!important;background:transparent!important;box-shadow:none!important;font-size:0!important}
+  .home-body .category-card:before{content:''!important;display:block!important;position:static!important;width:62px!important;height:62px!important;flex:0 0 62px!important;border-radius:19px!important;background:#f6b63d!important;box-shadow:0 4px 10px rgba(90,67,31,.12)!important}
+  .home-body .category-card:nth-child(2):before{background:#5bb8ed!important}
+  .home-body .category-card:nth-child(3):before{background:#47c9a0!important}
+  .home-body .category-card:nth-child(4):before{background:#a88bf1!important}
+  .home-body .category-card:nth-child(5):before{background:#f16a76!important}
+  .home-body .category-card:nth-child(6):before{background:#58c8d0!important}
+  .home-body .category-card:nth-child(7):before{background:#eea6d1!important}
+  .home-body .category-card:nth-child(8):before{background:#8dcf76!important}
+  .home-body .category-card .category-icon{position:absolute!important;left:5px!important;top:0!important;width:62px!important;height:62px!important;display:flex!important;align-items:center!important;justify-content:center!important;font-size:29px!important;line-height:1!important;z-index:2!important}
+  .home-body .category-card strong{display:block!important;font-size:10px!important;line-height:1.15!important;font-weight:850!important;white-space:nowrap!important;max-width:72px!important;overflow:hidden!important;text-overflow:ellipsis!important;color:#292722!important;margin-top:0!important}
+  .home-body .category-card small{display:none!important}
+
+  /* Featured listing cards: horizontal swipe */
+  .home-body .products{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:11px!important;padding:1px 1px 10px!important;scrollbar-width:none!important}
+  .home-body .products::-webkit-scrollbar{display:none!important}
+  .home-body .product{flex:0 0 192px!important;width:192px!important;min-width:192px!important;border-radius:15px!important;scroll-snap-align:start!important}
+  .home-body .product img{height:132px!important}
+
+  /* Keep filters functional but compact and visually secondary */
+  .home-body .filter-panel{margin-top:3px!important}
+
+  /* Trust strip under local service card */
+  .home-body .home-page>.service-banner:first-of-type:after{content:'✓ An toàn giao dịch    •    ☎ Hỗ trợ 24/7    •    ★ Tin chất lượng';display:block!important;margin-top:4px!important;padding-top:10px!important;border-top:1px solid rgba(255,255,255,.14)!important;color:#ded8d0!important;font-size:8.5px!important;line-height:1.5!important;text-align:center!important}
+}
+@media(max-width:390px){
+  .home-body .mobile-app-header{padding-left:9px!important;padding-right:9px!important}
+  .home-body .mobile-header-icon{flex-basis:34px!important;width:34px!important;height:34px!important}
+  .home-body .category-grid{gap:10px!important}
+  .home-body .category-card{flex-basis:68px!important;width:68px!important;min-width:68px!important;height:94px!important;min-height:94px!important}
+  .home-body .category-card:before,.home-body .category-card .category-icon{width:58px!important;height:58px!important}
+  .home-body .category-card .category-icon{left:5px!important;font-size:27px!important}
+  .home-body .category-card strong{font-size:9.5px!important;max-width:68px!important}
+  .home-body .product{flex-basis:180px!important;width:180px!important;min-width:180px!important}
+  .home-body .product img{height:125px!important}
+}
