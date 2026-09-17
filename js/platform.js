@@ -1,3 +1,12 @@
+// Chợ Phú Thọ - unified mobile app stylesheet loader
+(function(){
+  if(!document.getElementById('mobile-app-exact-css')){
+    const link=document.createElement('link');
+    link.id='mobile-app-exact-css';link.rel='stylesheet';link.href='css/mobile-app-exact.css?v=20260917-1';
+    document.head.appendChild(link);
+  }
+})();
+
 // Chợ Phú Thọ - lớp nền tảng dùng chung
 (function () {
   const SETTINGS_KEYS = ['site_name','site_tagline','support_phone','support_email','support_zalo','support_address','facebook_url','youtube_url','linkedin_url','analytics_id','currency','listing_default_days'];
