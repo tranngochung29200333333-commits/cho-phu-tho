@@ -46,3 +46,50 @@
     if(cat){setTimeout(()=>{sync();const select=document.getElementById('categoryFilter');if(select&&TAXONOMY.includes(cat)){select.value=cat;window.applyHomeFilters?.();}},450);}
   });
 })();
+
+// MOBILE SECTION CARDS — keep headings, category grid and featured listings inside clean bordered surfaces.
+(function(){
+  function apply(){
+    if(!document.body.classList.contains('home-body') || !window.matchMedia('(max-width:760px)').matches) return;
+    if(document.getElementById('mobile-section-card-style')) return;
+    const s=document.createElement('style');
+    s.id='mobile-section-card-style';
+    s.textContent=`
+      @media(max-width:760px){
+        .home-body .home-page > .section-block:has(.category-grid),
+        .home-body .home-page > #listings{
+          width:100%!important;
+          box-sizing:border-box!important;
+          margin-left:0!important;
+          margin-right:0!important;
+          padding:15px 14px 14px!important;
+          background:rgba(255,253,248,.96)!important;
+          border:1px solid #e3d8c8!important;
+          border-radius:18px!important;
+          box-shadow:0 3px 12px rgba(66,50,29,.07)!important;
+          overflow:hidden!important;
+        }
+        .home-body .home-page > .section-block:has(.category-grid) .section-heading,
+        .home-body .home-page > #listings .section-heading{
+          margin:0 0 12px!important;
+          padding:0!important;
+        }
+        .home-body .home-page > .section-block:has(.category-grid) .category-grid{
+          padding:2px 1px 4px!important;
+        }
+        .home-body .home-page > #listings .filter-panel{
+          margin-bottom:10px!important;
+        }
+        .home-body .home-page > #listings .products{
+          padding-bottom:3px!important;
+        }
+      }
+      @media(max-width:390px){
+        .home-body .home-page > .section-block:has(.category-grid),
+        .home-body .home-page > #listings{padding-left:12px!important;padding-right:12px!important;border-radius:16px!important}
+      }
+    `;
+    document.head.appendChild(s);
+  }
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,180));
+})();
